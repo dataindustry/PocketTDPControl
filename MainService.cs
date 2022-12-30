@@ -12,7 +12,6 @@ namespace PocketTDPControl
     {
         public void Adjust(string target, int tdp)
         {
-            Console.Out.WriteLine(target+ " " + tdp);
             Operation.Adjust(target, tdp);
         }
     }

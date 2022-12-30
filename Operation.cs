@@ -16,7 +16,7 @@ namespace PocketTDPControl
             Process p = new Process();
 
             p.StartInfo.FileName = "ryzenadj.exe";
-            p.StartInfo.Arguments = $"-{type} {tdp}";
+            p.StartInfo.Arguments = $"-{type} {tdp * 1000}";
             p.StartInfo.UseShellExecute = false;
             p.StartInfo.RedirectStandardInput = true;
             p.StartInfo.RedirectStandardOutput = true;
