@@ -31,77 +31,8 @@ namespace PocketTDPControl
         {
             InitializeComponent();
 
-        }
-
-        public bool Adjust(string type, int tdp) {
-
-            Process p = new Process();
-
-            p.StartInfo.FileName = "ryzenadj.exe";
-            p.StartInfo.Arguments = $"-{type} {tdp}";
-            p.StartInfo.UseShellExecute = false;
-            p.StartInfo.RedirectStandardInput = true;
-            p.StartInfo.RedirectStandardOutput = true;
-            p.StartInfo.RedirectStandardError = true;
-            p.StartInfo.CreateNoWindow = true;
-
-            p.Start();
-
-            var successResult = p.StandardOutput.ReadToEnd();
-
-            p.Close();
-            p.Dispose();
-
-            if (successResult.StartsWith("Sucessfully set"))
-            {
-                return true;
-            }
-            else {
-                return false;
-            }
-        }
-
-        public bool LoopbackExempt() 
-        {
-            RegistryKey rkConfig = Registry.CurrentUser.OpenSubKey("Software\\Classes\\Local Settings\\Software\\Microsoft\\Windows\\CurrentVersion\\AppContainer\\Mappings\\");
-
-            var keys = rkConfig.GetSubKeyNames();
-
-            foreach (string key in keys)
-            {
-
-                if (rkConfig.OpenSubKey(key).GetValue("DisplayName").ToString() == "PocketTDPControlWidget")
-                {
-                    Console.WriteLine(key);
-
-                    Process p = new Process();
-
-                    p.StartInfo.FileName = "CheckNetIsolation";
-                    p.StartInfo.Arguments = $"LoopbackExempt -a -p={key}";
-                    p.StartInfo.UseShellExecute = false;
-                    p.StartInfo.RedirectStandardInput = true;
-                    p.StartInfo.RedirectStandardOutput = true;
-                    p.StartInfo.RedirectStandardError = true;
-                    p.StartInfo.CreateNoWindow = true;
-
-                    p.Start();
-
-                    string error = p.StandardError.ReadToEnd();
-
-                    p.Close();
-
-                    if (error.Trim() == "")
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-
-                }
-            }
-            return false;
+            ServiceHost host = new ServiceHost(typeof(MainService));
+            host.Open();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -110,7 +41,6 @@ namespace PocketTDPControl
             // Adjust("b", 22000);
             // Adjust("c", 22000);
 
-            
         }
 
     }
