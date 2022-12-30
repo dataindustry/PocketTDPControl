@@ -7,13 +7,16 @@
         mc:Ignorable="d"
         MouseDown="Window_MouseDown"
         Closing="Window_Closing"
-        AllowsTransparency="False" WindowStyle="None" ResizeMode="NoResize"
-        Title="Pocket TDP Control" Height="320" Width="160">
+        AllowsTransparency="False" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Title="Pocket TDP Control" Height="400" Width="200">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition>
             </RowDefinition>
             <RowDefinition Height="80">
+            </RowDefinition>
+            <RowDefinition Height="40">
             </RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -25,7 +28,7 @@
         <Slider
             Grid.Row="0" Grid.Column="0" 
             Orientation="Vertical" TickPlacement="Both"
-            TickFrequency="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="200" Minimum="3" Maximum="33" Value="{Binding CurrentTDP}" />
+            TickFrequency="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="200" Minimum="3" Maximum="33" Value="{Binding CurrentTDP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1">
             <Button Content="3" Width="50" Margin="2" Click="AdjustButton_Click" />
             <Button Content="5" Width="50" Margin="2" Click="AdjustButton_Click" />
@@ -37,11 +40,14 @@
             <Button Content="33" Width="50" Margin="2" Click="AdjustButton_Click" />
         </StackPanel>
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0">
-            <TextBlock Text="{Binding CurrentTDP}" Width="60" Margin="2" TextAlignment="Center" />
+            <Button Content="{Binding CurrentTDP, Mode=OneWay}" Width="60" Margin="2" IsEnabled="False" />
+            <Button Content="Setting" Width="60" FontSize="10" IsEnabled="False" />
         </StackPanel>
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1">
-            <Button Content="{Binding PresetTDP}" Width="60" Margin="2" Click="AdjustButton_Click" />
-            <Button Content="SAVE" Width="60" Margin="2" Click="SaveButton_Click" />
+            <Button Content="{Binding PresetTDP, Mode=OneWay}" Width="60" Margin="2" Click="AdjustButton_Click" />
+            <Button Content="Save" Width="60" FontSize="10" Click="SaveButton_Click" />
         </StackPanel>
+        <Button Content="LoopbackExempt" Margin="2" FontSize="10" Grid.Column="0" Grid.Row="2" Click="LoopbackExemptButton_Click" />
+        <Button Content="Minimize" Margin="2" FontSize="10" Grid.Column="1" Grid.Row="2" Click="MinimizeButton_Click" />
     </Grid>
 </Window>

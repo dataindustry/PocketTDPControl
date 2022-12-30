@@ -1,11 +1,10 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.ServiceModel;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,6 +22,8 @@ namespace PocketTDPControl
 
         private string FilePath = "tdp.json";
 
+        ConcurrentQueue<int> TDPQueue = new ConcurrentQueue<int>();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -36,10 +37,30 @@ namespace PocketTDPControl
                 this.ViewModel = new TDPViewModel();
                 File.WriteAllText(this.FilePath, JsonConvert.SerializeObject(this.ViewModel));
             }
-            
-            this.DataContext = ViewModel;
 
+            this.DataContext = this.ViewModel;
             this.ViewModel.PropertyChanged += OnPropertyChanged;
+
+            Task t = new Task(() =>
+            {
+                while (true)
+                {
+
+                    if (TDPQueue.IsEmpty)
+                    {
+                        Thread.Sleep(100);
+                        continue;
+                    }
+
+                    TDPQueue.TryDequeue(out var tdp);
+
+                    Operation.Adjust("a", this.ViewModel.CurrentTDP);
+                    Operation.Adjust("b", this.ViewModel.CurrentTDP);
+                    Operation.Adjust("c", this.ViewModel.CurrentTDP);
+
+                }
+            });
+            t.Start();
 
             ServiceHost host = new ServiceHost(typeof(MainService));
             host.Open();
@@ -48,9 +69,7 @@ namespace PocketTDPControl
 
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            Operation.Adjust("a", this.ViewModel.CurrentTDP);
-            Operation.Adjust("b", this.ViewModel.CurrentTDP);
-            Operation.Adjust("c", this.ViewModel.CurrentTDP);
+            TDPQueue.Enqueue(this.ViewModel.CurrentTDP);
         }
 
         private void AdjustButton_Click(object sender, RoutedEventArgs e)
@@ -74,6 +93,20 @@ namespace PocketTDPControl
         private void Window_Closing(object sender, CancelEventArgs e)
         {
             File.WriteAllText(this.FilePath, JsonConvert.SerializeObject(this.ViewModel));
+        }
+
+        private void LoopbackExemptButton_Click(object sender, RoutedEventArgs e)
+        {
+            Task t = new Task(() =>
+            {
+                Operation.LoopbackExempt();
+            });
+            t.Start();
+        }
+
+        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            //TODO
         }
     }
 }
