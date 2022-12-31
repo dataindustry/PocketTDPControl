@@ -2,12 +2,14 @@
 using System;
 using System.Collections.Concurrent;
 using System.ComponentModel;
+using System.Drawing;
 using System.IO;
 using System.ServiceModel;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Input;
 
 namespace PocketTDPControl
@@ -23,6 +25,8 @@ namespace PocketTDPControl
         private string FilePath = "tdp.json";
 
         ConcurrentQueue<int> TDPQueue = new ConcurrentQueue<int>();
+
+        private NotifyIcon TrayIcon = null;
 
         public MainWindow()
         {
@@ -65,6 +69,9 @@ namespace PocketTDPControl
             ServiceHost host = new ServiceHost(typeof(MainService));
             host.Open();
 
+            InitialTray();
+            this.TrayIcon.Visible = false;
+
         }
 
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -74,7 +81,7 @@ namespace PocketTDPControl
 
         private void AdjustButton_Click(object sender, RoutedEventArgs e)
         {
-            Button clickedButton = sender as Button;
+            System.Windows.Controls.Button clickedButton = sender as System.Windows.Controls.Button;
             int tdp = Convert.ToInt32(clickedButton.Content.ToString());
             this.ViewModel.CurrentTDP = tdp;
         }
@@ -92,21 +99,49 @@ namespace PocketTDPControl
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
+            this.TrayIcon.Visible = false;
+            this.TrayIcon.Dispose();
             File.WriteAllText(this.FilePath, JsonConvert.SerializeObject(this.ViewModel));
-        }
-
-        private void LoopbackExemptButton_Click(object sender, RoutedEventArgs e)
-        {
-            Task t = new Task(() =>
-            {
-                Operation.LoopbackExempt();
-            });
-            t.Start();
         }
 
         private void MinimizeButton_Click(object sender, RoutedEventArgs e)
         {
-            //TODO
+
+            this.Visibility = Visibility.Hidden;
+            this.TrayIcon.Visible = true;
+
+        }
+
+        private void InitialTray()
+        {
+            TrayIcon = new NotifyIcon();
+            TrayIcon.Text = this.Title;
+            TrayIcon.Visible = true;
+            TrayIcon.Icon = new Icon(@"TrayIcon.ico");
+            TrayIcon.Click += TrayIcon_Click;
+        }
+
+        private void TrayIcon_Click(object sender, EventArgs e)
+        {
+            this.Visibility = Visibility.Visible;
+            this.TrayIcon.Visible = false;
+            this.Activate();
+        }
+
+        private void SettingButton_Click(object sender, RoutedEventArgs e)
+        {
+            SettingWindow setting = new SettingWindow();
+            double[] d = new double[2];
+            d[0] = this.Top + this.Height / 2;
+            d[1] = this.Left + this.Width / 2;
+            setting.WindowStartupLocation = System.Windows.WindowStartupLocation.Manual;
+            setting.Top = d[0] - setting.Height / 2;
+            setting.Left = d[1] - setting.Width / 2;
+            setting.ShowDialog();
+        }
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }
