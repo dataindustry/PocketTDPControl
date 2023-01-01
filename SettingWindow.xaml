@@ -8,11 +8,12 @@
         BorderBrush="Black" BorderThickness="1"
         AllowsTransparency="False" WindowStyle="None" WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
-        Width="140"
-        Height="50"
+        Width="200"
+        Height="80"
         Title="Setting">
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Button Content="Loopback Exampt" Width="120" Margin="2" FontSize="10" Click="LoopbackExamptButton_Click" />
+        <Button Content="Loopback Exampt" Margin="2" FontSize="10" Click="LoopbackExamptButton_Click" />
+        <CheckBox Content="Remap AYANEO 2 Logo Button" Margin="2" FontSize="10" IsChecked="{Binding IsRemapEnabled}" />
         <Button Content="Close" Margin="2" FontSize="10" Click="CloseButton_Click" />
     </StackPanel>
 </Window>

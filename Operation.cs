@@ -1,11 +1,18 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Windows.Forms;
+using WindowsInput.Native;
 
 namespace PocketTDPControl
 {
     internal class Operation
     {
+
+        public static Dictionary<int, bool> FromComboKey = new Dictionary<int, bool>();
+
+        public static VirtualKeyCode ToModifierKey, ToKey;
         public static bool Adjust(string type, int tdp)
         {
 
@@ -77,6 +84,27 @@ namespace PocketTDPControl
                 }
             }
             return false;
+        }
+
+        public static void RemapComboKey(Keys[] fromComboKey, VirtualKeyCode[] toComboKey)
+        {
+
+            foreach (var key in fromComboKey)
+            {
+
+                var keyCode = (int)key;
+
+                if (Operation.FromComboKey.ContainsKey(keyCode))
+                {
+                    Operation.FromComboKey[keyCode] = false;
+                }
+                else { Operation.FromComboKey.Add(keyCode, false); }
+
+            }
+
+            Operation.ToModifierKey = toComboKey[0];
+            Operation.ToKey = toComboKey[1];
+
         }
     }
 }

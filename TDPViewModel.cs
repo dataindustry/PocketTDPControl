@@ -13,6 +13,15 @@ namespace PocketTDPControl
         private int currentTDP;
         private int presetTDP;
         private int readingTDP;
+        private bool isRemapEnabled;
+
+        public bool IsRemapEnabled
+        {
+            get => isRemapEnabled; set
+            {
+                isRemapEnabled = value; RaisePropertyChanged();
+            }
+        }
 
         public int CurrentTDP { get => currentTDP; set
             {
