@@ -1,24 +1,20 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Management;
 using System.ServiceModel;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
-using Windows.ApplicationModel;
-using Windows.ApplicationModel.Core;
-using Windows.Gaming.UI;
-using Windows.System;
 using WindowsInput;
 using WindowsInput.Native;
+using static System.Management.ManagementObjectCollection;
 
 namespace PocketTDPControl
 {
@@ -30,13 +26,15 @@ namespace PocketTDPControl
 
         private TDPViewModel ViewModel;
 
-        private readonly string FilePath = "tdp.json";
+        private readonly string FilePath = "tdp1.json";
 
         private ConcurrentQueue<int> TDPQueue;
 
         private NotifyIcon TrayIcon;
 
         private KeyboardHook CustomizeKeyboardHook;
+
+        private HardwareMonitor HWM;
 
         public MainWindow()
         {
@@ -50,16 +48,48 @@ namespace PocketTDPControl
 
             InitialTDPAdjustor();
 
-            RemapAyaneo2KeyToGameBarKey();
-            
+            RemapAyaneo2IconKeyToGameBarKey();
+
+            CheckBattery();
+
+            InitialSensorReading();
+
         }
 
-        private void RemapAyaneo2KeyToGameBarKey()
+        private void InitialSensorReading()
+        {
+            HWM = new HardwareMonitor(this.ViewModel);
+
+            Task t = new Task(() =>
+            {
+                while (true)
+                {
+                    Thread.Sleep(1000);
+
+                    HWM.Update();
+
+                }
+            });
+            t.Start();
+        }
+
+        private void CheckBattery()
+        {
+
+            ManagementObjectEnumerator mom = new ManagementClass("Win32_Battery").GetInstances().GetEnumerator();
+            if (mom.MoveNext())
+            {
+                Console.WriteLine(mom.Current.Properties["EstimatedChargeRemaining"].Value);
+                Console.WriteLine(mom.Current.Properties["EstimatedRunTime"].Value);
+            }
+        }
+
+        private void RemapAyaneo2IconKeyToGameBarKey()
         {
             CustomizeKeyboardHook = new KeyboardHook();
             CustomizeKeyboardHook.InstallHook(this.KeyboardHookKeyPress);
 
-            if(this.ViewModel.IsRemapEnabled)
+            if(this.ViewModel.IsAyaneo2LogoRemapEnabled)
                 Operation.RemapComboKey(
                     new[] { Keys.LWin, Keys.RControlKey, Keys.F17 },
                     new[] { VirtualKeyCode.LWIN, VirtualKeyCode.VK_G });
@@ -76,6 +106,8 @@ namespace PocketTDPControl
                 this.ViewModel = new TDPViewModel();
                 File.WriteAllText(this.FilePath, JsonConvert.SerializeObject(this.ViewModel));
             }
+
+            this.ViewModel.PresetTDP = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
             this.DataContext = this.ViewModel;
             this.ViewModel.PropertyChanged += OnPropertyChanged;
@@ -98,9 +130,9 @@ namespace PocketTDPControl
 
                     TDPQueue.TryDequeue(out var tdp);
 
-                    Operation.Adjust("a", this.ViewModel.CurrentTDP);
-                    Operation.Adjust("b", this.ViewModel.CurrentTDP);
-                    Operation.Adjust("c", this.ViewModel.CurrentTDP);
+                    Operation.Adjust("a", this.ViewModel.ApplyTDP);
+                    Operation.Adjust("b", this.ViewModel.ApplyTDP);
+                    Operation.Adjust("c", this.ViewModel.ApplyTDP);
 
                 }
             });
@@ -149,10 +181,10 @@ namespace PocketTDPControl
         }
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            TDPQueue.Enqueue(this.ViewModel.CurrentTDP);
+            TDPQueue.Enqueue(this.ViewModel.ApplyTDP);
 
-            if(e.PropertyName == nameof(this.ViewModel.IsRemapEnabled)) {
-                if (this.ViewModel.IsRemapEnabled)
+            if(e.PropertyName == nameof(this.ViewModel.IsAyaneo2LogoRemapEnabled)) {
+                if (this.ViewModel.IsAyaneo2LogoRemapEnabled)
                 {
                     Operation.RemapComboKey(
                     new[] { Keys.LWin, Keys.RControlKey, Keys.F17 },
@@ -169,13 +201,9 @@ namespace PocketTDPControl
         {
             System.Windows.Controls.Button clickedButton = sender as System.Windows.Controls.Button;
             int tdp = Convert.ToInt32(clickedButton.Content.ToString());
-            this.ViewModel.CurrentTDP = tdp;
+            this.ViewModel.ApplyTDP = tdp;
         }
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.ViewModel.PresetTDP = this.ViewModel.CurrentTDP;
-        }
-        private void Window_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == System.Windows.Input.MouseButton.Left)
                 this.DragMove();

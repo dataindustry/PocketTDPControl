@@ -7,17 +7,60 @@
         mc:Ignorable="d"
         MouseDown="Window_MouseDown"
         Closing="Window_Closing"
-        BorderBrush="Black" BorderThickness="1"
+        BorderThickness="1"
         AllowsTransparency="False" WindowStyle="None" WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
-        Title="Pocket TDP Control" Height="400" Width="200">
+        Title="Pocket TDP Control" Height="400" Width="600">
+    
+    <Window.Resources>
+        <Style TargetType="{x:Type Button}" x:Key="SudokuButton">
+            <Setter Property="BorderBrush" Value="LightGray"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="Padding" Value="10"/>
+        </Style>
+        <Style TargetType="{x:Type Button}" x:Key="MenuButton">
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+        </Style>
+        <Style TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="16"/>
+        </Style>
+        <Style TargetType="{x:Type Slider}">
+            <Setter Property="IsDirectionReversed" Value="True"/>
+            <Setter Property="Orientation" Value="Vertical"/>
+            <Setter Property="TickPlacement" Value="Both"/>
+            <Setter Property="TickFrequency" Value="1"/>
+            <Setter Property="Height" Value="Auto"/>
+            <Setter Property="Margin" Value="5,0,5,0"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+        </Style>
+        <Style TargetType="{x:Type GroupBox}">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Width" Value="Auto"/>
+            <Setter Property="Height" Value="Auto"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        </Style>
+        <Style TargetType="{x:Type StackPanel}">
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Width" Value="Auto"/>
+            <Setter Property="Height" Value="Auto"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        </Style>
+    </Window.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20">
             </RowDefinition>
             <RowDefinition>
             </RowDefinition>
-            <RowDefinition Height="80">
+            <RowDefinition Height="60">
             </RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -25,30 +68,99 @@
             </ColumnDefinition>
             <ColumnDefinition>
             </ColumnDefinition>
+            <ColumnDefinition>
+            </ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Button Content="Minimize" Margin="0" Padding="0" Grid.Column="0" Grid.Row="0" FontSize="10" Click="MinimizeButton_Click" />
-        <Button Content="Close" Margin="0" Padding="0" Grid.Column="1" Grid.Row="0" FontSize="10" Click="CloseButton_Click" />
-        <Slider
-            Grid.Row="1" Grid.Column="0" 
-            Orientation="Vertical" TickPlacement="Both"
-            TickFrequency="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="200" Minimum="3" Maximum="33" Value="{Binding CurrentTDP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1">
-            <Button Content="3" Width="50" Margin="2" Click="AdjustButton_Click" />
-            <Button Content="5" Width="50" Margin="2" Click="AdjustButton_Click" />
-            <Button Content="10" Width="50" Margin="2" Click="AdjustButton_Click" />
-            <Button Content="15" Width="50" Margin="2" Click="AdjustButton_Click" />
-            <Button Content="22" Width="50" Margin="2" Click="AdjustButton_Click" />
-            <Button Content="25" Width="50" Margin="2" Click="AdjustButton_Click" />
-            <Button Content="30" Width="50" Margin="2" Click="AdjustButton_Click" />
-            <Button Content="33" Width="50" Margin="2" Click="AdjustButton_Click" />
+        
+        <Button Content="Setting" Grid.Column="0" Grid.Row="0" Style="{StaticResource MenuButton}" />
+        <Button Content="Minimize" Grid.Column="1" Grid.Row="0" Style="{StaticResource MenuButton}" Click="MinimizeButton_Click" />
+        <Button Content="Close" Grid.Column="2" Grid.Row="0" Style="{StaticResource MenuButton}" Click="CloseButton_Click" />
+
+        <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Vertical">
+            <GroupBox Header="Processor">
+                <TextBlock Text="{Binding CpuName, Mode=OneWay}" />
+            </GroupBox>
+            <GroupBox Header="Machine">
+                <TextBlock Text="{Binding MachineName, Mode=OneWay}" />
+            </GroupBox>
         </StackPanel>
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0">
-            <Button Content="{Binding CurrentTDP, Mode=OneWay}" Width="60" Margin="2" IsEnabled="False" />
-            <Button Content="Setting" Width="60" FontSize="10" Click="SettingButton_Click" />
+
+        <StackPanel Grid.Column="0" Grid.Row="2" Orientation="Horizontal">
+            <GroupBox Header="Reading TDP">
+                <TextBlock Text="{Binding ReadingTDP, Mode=OneWay}" />
+            </GroupBox>
+            <GroupBox Header="Reading FPS">
+                <TextBlock Text="{Binding ReadingFPS, Mode=OneWay}" />
+            </GroupBox>
         </StackPanel>
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Grid.Column="1">
-            <Button Content="{Binding PresetTDP, Mode=OneWay}" Width="60" Margin="2" Click="AdjustButton_Click" />
-            <Button Content="Save" Width="60" FontSize="10" Click="SaveButton_Click" />
+
+        <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
+
+            <GroupBox Header="SLOW " Margin="5">
+                <Slider Minimum="3" Maximum="33"
+            Value="{Binding ApplyTDP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </GroupBox>
+            <GroupBox Header="FAST " Margin="5">
+                <Slider Minimum="3" Maximum="33"
+            Value="{Binding ApplyTDP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </GroupBox>
+            <GroupBox Header="STAPM" Margin="5">
+                <Slider Minimum="3" Maximum="33"
+            Value="{Binding ApplyTDP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </GroupBox>
+
         </StackPanel>
+
+        <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal">
+            <GroupBox Header="SLOW ">
+                <TextBlock Text="{Binding ApplyTDP, Mode=OneWay}" />
+            </GroupBox>
+            <GroupBox Header="FAST ">
+                <TextBlock Text="{Binding ApplyTDP, Mode=OneWay}" />
+            </GroupBox>
+            <GroupBox Header="STAPM">
+                <TextBlock Text="{Binding ApplyTDP, Mode=OneWay}" />
+            </GroupBox>
+        </StackPanel>
+
+        <Grid Grid.Column="2" Grid.Row="1" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition>
+                </RowDefinition>
+                <RowDefinition>
+                </RowDefinition>
+                <RowDefinition>
+                </RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition>
+                </ColumnDefinition>
+                <ColumnDefinition>
+                </ColumnDefinition>
+                <ColumnDefinition>
+                </ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Grid.Row="0" Content="{Binding PresetTDP[0]}" BorderThickness="0,0,1,1" Style="{StaticResource SudokuButton}" />
+            <Button Grid.Column="0" Grid.Row="1" Content="{Binding PresetTDP[1]}" BorderThickness="0,0,1,1" Style="{StaticResource SudokuButton}" />
+            <Button Grid.Column="0" Grid.Row="2" Content="{Binding PresetTDP[2]}" BorderThickness="0,0,1,0" Style="{StaticResource SudokuButton}" />
+            <Button Grid.Column="1" Grid.Row="0" Content="{Binding PresetTDP[3]}" BorderThickness="0,0,1,1" Style="{StaticResource SudokuButton}" />
+            <Button Grid.Column="1" Grid.Row="1" Content="{Binding PresetTDP[4]}" BorderThickness="0,0,1,1" Style="{StaticResource SudokuButton}" />
+            <Button Grid.Column="1" Grid.Row="2" Content="{Binding PresetTDP[5]}" BorderThickness="0,0,1,0" Style="{StaticResource SudokuButton}" />
+            <Button Grid.Column="2" Grid.Row="0" Content="{Binding PresetTDP[6]}" BorderThickness="0,0,0,1" Style="{StaticResource SudokuButton}" />
+            <Button Grid.Column="2" Grid.Row="1" Content="{Binding PresetTDP[7]}" BorderThickness="0,0,0,1" Style="{StaticResource SudokuButton}" />
+            <Button Grid.Column="2" Grid.Row="2" Content="{Binding PresetTDP[8]}" BorderThickness="0,0,0,0" Style="{StaticResource SudokuButton}" />
+
+        </Grid>
+
+        <GroupBox Grid.Column="2" Grid.Row="2" Header="Edit Mode">
+            <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <RadioButton GroupName="IsEditMode" Content="Off" Margin="5" FontSize="8" />
+                <RadioButton GroupName="IsEditMode" Content="On" Margin="5" FontSize="8" />
+                <Button Content="Sort" Padding="5,0,5,0" Margin="5" FontSize="8" />
+            </StackPanel>
+        </GroupBox>
+
     </Grid>
+
 </Window>
