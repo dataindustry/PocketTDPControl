@@ -125,8 +125,12 @@
     <Compile Include="HotKeyManager.cs" />
     <Compile Include="KeyboardHook.cs" />
     <Compile Include="MainService.cs" />
+    <Compile Include="PresetTDPConverter.cs" />
     <Compile Include="SettingWindow.xaml.cs">
       <DependentUpon>SettingWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TDPSliderWindow.xaml.cs">
+      <DependentUpon>TDPSliderWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="TDPViewModel.cs" />
     <Page Include="MainWindow.xaml">
@@ -143,6 +147,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="SettingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TDPSliderWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

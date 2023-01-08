@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
@@ -10,8 +11,10 @@ using System.ServiceModel;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
+using Windows.UI.Xaml.Controls;
 using WindowsInput;
 using WindowsInput.Native;
 using static System.Management.ManagementObjectCollection;
@@ -36,6 +39,8 @@ namespace PocketTDPControl
 
         private HardwareMonitor HWM;
 
+        private TDPSliderWindow TDPSliderWindowDialog;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -54,9 +59,18 @@ namespace PocketTDPControl
 
             InitialSensorReading();
 
+            InitialDialog();
+
         }
 
-        private void InitialSensorReading()
+        private void InitialDialog()
+        {
+            this.TDPSliderWindowDialog = new TDPSliderWindow();
+            this.TDPSliderWindowDialog.DataContext = this.ViewModel;
+            this.TDPSliderWindowDialog.WindowStartupLocation = WindowStartupLocation.Manual;
+        }
+
+            private void InitialSensorReading()
         {
             HWM = new HardwareMonitor(this.ViewModel);
 
@@ -106,8 +120,6 @@ namespace PocketTDPControl
                 this.ViewModel = new TDPViewModel();
                 File.WriteAllText(this.FilePath, JsonConvert.SerializeObject(this.ViewModel));
             }
-
-            this.ViewModel.PresetTDP = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
             this.DataContext = this.ViewModel;
             this.ViewModel.PropertyChanged += OnPropertyChanged;
@@ -232,7 +244,7 @@ namespace PocketTDPControl
         }
         private void SettingButton_Click(object sender, RoutedEventArgs e)
         {
-            SettingWindow setting = new SettingWindow();
+            var setting = new SettingWindow();
             double[] d = new double[2];
             d[0] = this.Top + this.Height / 2;
             d[1] = this.Left + this.Width / 2;
@@ -244,7 +256,44 @@ namespace PocketTDPControl
         }
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
+            File.WriteAllText(this.FilePath, JsonConvert.SerializeObject(this.ViewModel));
+            if (this.TDPSliderWindowDialog != null) this.TDPSliderWindowDialog.Close();
             this.Close();
+        }
+
+        private void ChangeSudokuButtonStyle(System.Windows.Controls.Button button) {
+
+            var grid = button.Parent as System.Windows.Controls.Grid;
+            foreach (var child in grid.Children)
+            {
+                var sudokuButton = child as System.Windows.Controls.Button;
+                sudokuButton.Background = System.Windows.Media.Brushes.Transparent;
+            }
+
+            button.Background = System.Windows.Media.Brushes.Aqua;
+        }
+
+        private void SudokuButton_Click(object sender, RoutedEventArgs e)
+        {
+            var button = e.OriginalSource as System.Windows.Controls.Button;
+            ChangeSudokuButtonStyle(button);
+            this.ViewModel.PresetTDPIndex = int.Parse(button.Name.Split('_')[1]);
+
+            if (this.ViewModel.IsEditModeEnabled)
+            {
+                this.TDPSliderWindowDialog.WindowStartupLocation = WindowStartupLocation.Manual;
+            }
+            else {
+                this.ViewModel.ApplyTDP = this.ViewModel.PresetTDP[this.ViewModel.PresetTDPIndex];
+            }
+
+        }
+
+        private void SortButton_Click(object sender, RoutedEventArgs e)
+        {
+            var newPresetTDP = this.ViewModel.PresetTDP.ToArray<int>();
+            Array.Sort(newPresetTDP);
+            this.ViewModel.PresetTDP = new ObservableCollection<int>(newPresetTDP);
         }
     }
 }

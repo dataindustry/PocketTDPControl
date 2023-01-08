@@ -1,4 +1,8 @@
 ﻿using GalaSoft.MvvmLight;
+using System;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Windows.Data;
 
 namespace PocketTDPControl
 {
@@ -11,10 +15,16 @@ namespace PocketTDPControl
         private int gpuTemperture;
         private bool isGpuAti;
         private int readingTDP;
+        private int readingFPS;
+        private int minTDP;
+        private int maxTDP;
         private int applyTDP;
-        private int[] presetTDP;
+        private ObservableCollection<int> presetTDP;
+        private int presetTDPIndex;
         private bool isEditModeEnabled;
         private bool isAyaneo2LogoRemapEnabled;
+        private int mainWindowTop;
+        private int mainWindowLeft;
 
         public string CpuName { get => cpuName; set { cpuName = value; RaisePropertyChanged(); } }
         public string GpuName { get => gpuName; set { gpuName = value; RaisePropertyChanged(); } }
@@ -48,6 +58,30 @@ namespace PocketTDPControl
             }
         }
 
+        public int ReadingFPS
+        {
+            get => readingFPS; set
+            {
+                readingFPS = value; RaisePropertyChanged();
+            }
+        }
+
+        public int MinTDP
+        {
+            get => minTDP; set
+            {
+                minTDP = value; RaisePropertyChanged();
+            }
+        }
+
+        public int MaxTDP
+        {
+            get => maxTDP; set
+            {
+                maxTDP = value; RaisePropertyChanged();
+            }
+        }
+
         public int ApplyTDP
         {
             get => applyTDP; set
@@ -56,11 +90,32 @@ namespace PocketTDPControl
             }
         }
 
-        public int[] PresetTDP
+        public ObservableCollection<int> PresetTDP
         {
-            get => presetTDP; set
+            get { return presetTDP; }
+            set { presetTDP = value; RaisePropertyChanged(); }
+        }
+
+        public int PresetTDPIndex
+        {
+            get => presetTDPIndex; set
             {
-                presetTDP = value; RaisePropertyChanged();
+                presetTDPIndex = value; RaisePropertyChanged();
+            }
+        }
+        public int MainWindowTop
+        {
+            get => mainWindowTop; set
+            {
+                mainWindowTop = value; RaisePropertyChanged();
+            }
+        }
+
+        public int MainWindowLeft
+        {
+            get => mainWindowLeft; set
+            {
+                mainWindowLeft = value; RaisePropertyChanged();
             }
         }
 

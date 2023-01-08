@@ -3,8 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PocketTDPControl"
+        xmlns:local="clr-namespace:PocketTDPControl" d:DataContext="{d:DesignInstance Type=local:TDPViewModel}"
         mc:Ignorable="d"
+        Top="{Binding MainWindowTop, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+        Left="{Binding MainWindowLeft, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
         MouseDown="Window_MouseDown"
         Closing="Window_Closing"
         BorderThickness="1"
@@ -36,6 +38,11 @@
             <Setter Property="Margin" Value="5,0,5,0"/>
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
             <Setter Property="VerticalAlignment" Value="Stretch"/>
+        </Style>
+        <Style TargetType="{x:Type RadioButton}">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="FontSize" Value="8"/>
         </Style>
         <Style TargetType="{x:Type GroupBox}">
             <Setter Property="Margin" Value="5"/>
@@ -72,40 +79,43 @@
             </ColumnDefinition>
         </Grid.ColumnDefinitions>
         
-        <Button Content="Setting" Grid.Column="0" Grid.Row="0" Style="{StaticResource MenuButton}" />
-        <Button Content="Minimize" Grid.Column="1" Grid.Row="0" Style="{StaticResource MenuButton}" Click="MinimizeButton_Click" />
-        <Button Content="Close" Grid.Column="2" Grid.Row="0" Style="{StaticResource MenuButton}" Click="CloseButton_Click" />
+        <Button Content="Setting" Grid.Column="0" Grid.Row="0" Style="{StaticResource MenuButton}" 
+                Click="SettingButton_Click" />
+        <Button Content="Minimize" Grid.Column="1" Grid.Row="0" Style="{StaticResource MenuButton}" 
+                Click="MinimizeButton_Click" />
+        <Button Content="Close" Grid.Column="2" Grid.Row="0" Style="{StaticResource MenuButton}" 
+                Click="CloseButton_Click" />
 
         <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Vertical">
             <GroupBox Header="Processor">
-                <TextBlock Text="{Binding CpuName, Mode=OneWay}" />
+                <TextBlock Text="{Binding CpuName}" />
             </GroupBox>
             <GroupBox Header="Machine">
-                <TextBlock Text="{Binding MachineName, Mode=OneWay}" />
+                <TextBlock Text="{Binding MachineName}" />
             </GroupBox>
         </StackPanel>
 
         <StackPanel Grid.Column="0" Grid.Row="2" Orientation="Horizontal">
             <GroupBox Header="Reading TDP">
-                <TextBlock Text="{Binding ReadingTDP, Mode=OneWay}" />
+                <TextBlock Text="{Binding ReadingTDP}" />
             </GroupBox>
             <GroupBox Header="Reading FPS">
-                <TextBlock Text="{Binding ReadingFPS, Mode=OneWay}" />
+                <TextBlock Text="{Binding ReadingFPS}" />
             </GroupBox>
         </StackPanel>
 
         <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
 
             <GroupBox Header="SLOW " Margin="5">
-                <Slider Minimum="3" Maximum="33"
+                <Slider Minimum="{Binding MinTDP}" Maximum="{Binding MaxTDP}"
             Value="{Binding ApplyTDP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </GroupBox>
             <GroupBox Header="FAST " Margin="5">
-                <Slider Minimum="3" Maximum="33"
+                <Slider Minimum="{Binding MinTDP}" Maximum="{Binding MaxTDP}"
             Value="{Binding ApplyTDP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </GroupBox>
             <GroupBox Header="STAPM" Margin="5">
-                <Slider Minimum="3" Maximum="33"
+                <Slider Minimum="{Binding MinTDP}" Maximum="{Binding MaxTDP}"
             Value="{Binding ApplyTDP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </GroupBox>
 
@@ -113,13 +123,13 @@
 
         <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal">
             <GroupBox Header="SLOW ">
-                <TextBlock Text="{Binding ApplyTDP, Mode=OneWay}" />
+                <TextBlock Text="{Binding ApplyTDP}" />
             </GroupBox>
             <GroupBox Header="FAST ">
-                <TextBlock Text="{Binding ApplyTDP, Mode=OneWay}" />
+                <TextBlock Text="{Binding ApplyTDP}" />
             </GroupBox>
             <GroupBox Header="STAPM">
-                <TextBlock Text="{Binding ApplyTDP, Mode=OneWay}" />
+                <TextBlock Text="{Binding ApplyTDP}" />
             </GroupBox>
         </StackPanel>
 
@@ -141,23 +151,41 @@
                 </ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0" Grid.Row="0" Content="{Binding PresetTDP[0]}" BorderThickness="0,0,1,1" Style="{StaticResource SudokuButton}" />
-            <Button Grid.Column="0" Grid.Row="1" Content="{Binding PresetTDP[1]}" BorderThickness="0,0,1,1" Style="{StaticResource SudokuButton}" />
-            <Button Grid.Column="0" Grid.Row="2" Content="{Binding PresetTDP[2]}" BorderThickness="0,0,1,0" Style="{StaticResource SudokuButton}" />
-            <Button Grid.Column="1" Grid.Row="0" Content="{Binding PresetTDP[3]}" BorderThickness="0,0,1,1" Style="{StaticResource SudokuButton}" />
-            <Button Grid.Column="1" Grid.Row="1" Content="{Binding PresetTDP[4]}" BorderThickness="0,0,1,1" Style="{StaticResource SudokuButton}" />
-            <Button Grid.Column="1" Grid.Row="2" Content="{Binding PresetTDP[5]}" BorderThickness="0,0,1,0" Style="{StaticResource SudokuButton}" />
-            <Button Grid.Column="2" Grid.Row="0" Content="{Binding PresetTDP[6]}" BorderThickness="0,0,0,1" Style="{StaticResource SudokuButton}" />
-            <Button Grid.Column="2" Grid.Row="1" Content="{Binding PresetTDP[7]}" BorderThickness="0,0,0,1" Style="{StaticResource SudokuButton}" />
-            <Button Grid.Column="2" Grid.Row="2" Content="{Binding PresetTDP[8]}" BorderThickness="0,0,0,0" Style="{StaticResource SudokuButton}" />
+            <Button x:Name="SudokuButton_0" Grid.Column="0" Grid.Row="0" 
+                    Content="{Binding PresetTDP[0]}" Click="SudokuButton_Click"
+                    BorderThickness="0,0,1,1" Style="{StaticResource SudokuButton}" />
+            <Button x:Name="SudokuButton_1" Grid.Column="0" Grid.Row="1" 
+                    Content="{Binding PresetTDP[1]}" Click="SudokuButton_Click"
+                    BorderThickness="0,0,1,1" Style="{StaticResource SudokuButton}" />
+            <Button x:Name="SudokuButton_2" Grid.Column="0" Grid.Row="2" 
+                    Content="{Binding PresetTDP[2]}" Click="SudokuButton_Click"
+                    BorderThickness="0,0,1,0" Style="{StaticResource SudokuButton}" />
+            <Button x:Name="SudokuButton_3" Grid.Column="1" Grid.Row="0" 
+                    Content="{Binding PresetTDP[3]}" Click="SudokuButton_Click"
+                    BorderThickness="0,0,1,1" Style="{StaticResource SudokuButton}" />
+            <Button x:Name="SudokuButton_4" Grid.Column="1" Grid.Row="1" 
+                    Content="{Binding PresetTDP[4]}" Click="SudokuButton_Click"
+                    BorderThickness="0,0,1,1" Style="{StaticResource SudokuButton}" />
+            <Button x:Name="SudokuButton_5" Grid.Column="1" Grid.Row="2" 
+                    Content="{Binding PresetTDP[5]}" Click="SudokuButton_Click"
+                    BorderThickness="0,0,1,0" Style="{StaticResource SudokuButton}" />
+            <Button x:Name="SudokuButton_6" Grid.Column="2" Grid.Row="0" 
+                    Content="{Binding PresetTDP[6]}" Click="SudokuButton_Click"
+                    BorderThickness="0,0,0,1" Style="{StaticResource SudokuButton}" />
+            <Button x:Name="SudokuButton_7" Grid.Column="2" Grid.Row="1" 
+                    Content="{Binding PresetTDP[7]}" Click="SudokuButton_Click"
+                    BorderThickness="0,0,0,1" Style="{StaticResource SudokuButton}" />
+            <Button x:Name="SudokuButton_8" Grid.Column="2" Grid.Row="2" 
+                    Content="{Binding PresetTDP[8]}" Click="SudokuButton_Click"
+                    BorderThickness="0,0,0,0" Style="{StaticResource SudokuButton}" />
 
         </Grid>
 
-        <GroupBox Grid.Column="2" Grid.Row="2" Header="Edit Mode">
+        <GroupBox Grid.Column="2" Grid.Row="2" Header="Sudoku Option">
             <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <RadioButton GroupName="IsEditMode" Content="Off" Margin="5" FontSize="8" />
-                <RadioButton GroupName="IsEditMode" Content="On" Margin="5" FontSize="8" />
-                <Button Content="Sort" Padding="5,0,5,0" Margin="5" FontSize="8" />
+                <CheckBox Content="Edit Mode" IsChecked="{Binding IsEditModeEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <Button Content="Sort" Padding="5,0,5,0" Margin="5" FontSize="8" 
+                        IsEnabled="{Binding IsEditModeEnabled}" Click="SortButton_Click" />
             </StackPanel>
         </GroupBox>
 

@@ -1,0 +1,30 @@
+﻿<Window x:Class="PocketTDPControl.TDPSliderWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PocketTDPControl" d:DataContext="{d:DesignInstance Type=local:TDPViewModel}"
+        BorderThickness="1" Visibility="{Binding IsEditModeEnabled, Mode=OneWay, Converter={StaticResource BoolToVis}}"
+        AllowsTransparency="False" WindowStyle="None" ResizeMode="NoResize"
+        Top="{Binding MainWindowTop, Mode=OneWay}"
+        Left="{Binding MainWindowLeft, Mode=OneWay}"
+        mc:Ignorable="d"
+        Title="TDPSliderWindow" Height="200" Width="45">
+    <Window.Resources>
+        <local:PresetTDPConverter x:Key="PresetTDPConverter" />
+    </Window.Resources>
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Slider Orientation="Vertical" IsDirectionReversed="True" Height="170" Width="Auto" Margin="5"
+                TickPlacement="Both" TickFrequency="1"
+                Minimum="{Binding MinTDP}" Maximum="{Binding MaxTDP}">
+            <Slider.Value>
+                <MultiBinding Converter="{StaticResource PresetTDPConverter}">
+                    <Binding Path="PresetTDP" />
+                    <Binding Path="PresetTDPIndex" />
+                </MultiBinding>
+            </Slider.Value>
+        </Slider>
+        <Button Content="OK" Click="Button_Click" />
+    </StackPanel>
+
+</Window>
