@@ -67,10 +67,9 @@ namespace PocketTDPControl
         {
             this.TDPSliderWindowDialog = new TDPSliderWindow();
             this.TDPSliderWindowDialog.DataContext = this.ViewModel;
-            this.TDPSliderWindowDialog.WindowStartupLocation = WindowStartupLocation.Manual;
         }
 
-            private void InitialSensorReading()
+        private void InitialSensorReading()
         {
             HWM = new HardwareMonitor(this.ViewModel);
 
@@ -78,10 +77,10 @@ namespace PocketTDPControl
             {
                 while (true)
                 {
-                    Thread.Sleep(1000);
 
                     HWM.Update();
 
+                    Thread.Sleep(1000);
                 }
             });
             t.Start();
@@ -89,13 +88,25 @@ namespace PocketTDPControl
 
         private void CheckBattery()
         {
-
-            ManagementObjectEnumerator mom = new ManagementClass("Win32_Battery").GetInstances().GetEnumerator();
-            if (mom.MoveNext())
+            
+            Task t = new Task(() =>
             {
-                Console.WriteLine(mom.Current.Properties["EstimatedChargeRemaining"].Value);
-                Console.WriteLine(mom.Current.Properties["EstimatedRunTime"].Value);
-            }
+                while (true)
+                {
+              
+                    ManagementObjectEnumerator mom = new ManagementClass("Win32_Battery").GetInstances().GetEnumerator();
+                    if (mom.MoveNext())
+                    {
+                        this.ViewModel.EstimatedChargeRemaining = int.Parse(mom.Current.Properties["EstimatedChargeRemaining"].Value.ToString());
+                        this.ViewModel.EstimatedRunTime = int.Parse(mom.Current.Properties["EstimatedRunTime"].Value.ToString());
+                    }
+
+                    Thread.Sleep(10000);
+
+                }
+            });
+            t.Start();
+            
         }
 
         private void RemapAyaneo2IconKeyToGameBarKey()
@@ -120,6 +131,8 @@ namespace PocketTDPControl
                 this.ViewModel = new TDPViewModel();
                 File.WriteAllText(this.FilePath, JsonConvert.SerializeObject(this.ViewModel));
             }
+
+            this.ViewModel.IsEditModeEnabled = false;
 
             this.DataContext = this.ViewModel;
             this.ViewModel.PropertyChanged += OnPropertyChanged;
@@ -282,6 +295,8 @@ namespace PocketTDPControl
             if (this.ViewModel.IsEditModeEnabled)
             {
                 this.TDPSliderWindowDialog.WindowStartupLocation = WindowStartupLocation.Manual;
+                this.TDPSliderWindowDialog.Top = this.Top;
+                this.TDPSliderWindowDialog.Left = this.Left + this.Width + 5;
             }
             else {
                 this.ViewModel.ApplyTDP = this.ViewModel.PresetTDP[this.ViewModel.PresetTDPIndex];
@@ -294,6 +309,12 @@ namespace PocketTDPControl
             var newPresetTDP = this.ViewModel.PresetTDP.ToArray<int>();
             Array.Sort(newPresetTDP);
             this.ViewModel.PresetTDP = new ObservableCollection<int>(newPresetTDP);
+        }
+
+        private void EditModeCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            this.TDPSliderWindowDialog.Top = this.Top;
+            this.TDPSliderWindowDialog.Left = this.Left + this.Width + 5;
         }
     }
 }

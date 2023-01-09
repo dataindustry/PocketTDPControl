@@ -5,14 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PocketTDPControl" d:DataContext="{d:DesignInstance Type=local:TDPViewModel}"
         mc:Ignorable="d"
-        Top="{Binding MainWindowTop, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-        Left="{Binding MainWindowLeft, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-        MouseDown="Window_MouseDown"
-        Closing="Window_Closing"
-        BorderThickness="1"
-        AllowsTransparency="False" WindowStyle="None" WindowStartupLocation="CenterScreen"
-        ResizeMode="NoResize"
-        Title="Pocket TDP Control" Height="400" Width="600">
+        Title="Pocket TDP Control"
+        MouseDown="Window_MouseDown" Closing="Window_Closing"
+        BorderThickness="1" AllowsTransparency="False" 
+        WindowStyle="None" ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen" Height="400" Width="600">
     
     <Window.Resources>
         <Style TargetType="{x:Type Button}" x:Key="SudokuButton">
@@ -92,6 +89,12 @@
             </GroupBox>
             <GroupBox Header="Machine">
                 <TextBlock Text="{Binding MachineName}" />
+            </GroupBox>
+            <GroupBox Header="Estimated Battery Remaining">
+                <ProgressBar Value="{Binding EstimatedChargeRemaining}" Height="10" Margin="5,10,5,10" />
+            </GroupBox>
+            <GroupBox Header="Estimated Run Time">
+                <TextBlock Text="{Binding EstimatedRunTime}" />
             </GroupBox>
         </StackPanel>
 
@@ -183,7 +186,8 @@
 
         <GroupBox Grid.Column="2" Grid.Row="2" Header="Sudoku Option">
             <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <CheckBox Content="Edit Mode" IsChecked="{Binding IsEditModeEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <CheckBox FontSize="8" Checked="EditModeCheckBox_Checked" Margin="5,3,5,0"
+                          IsChecked="{Binding IsEditModeEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <Button Content="Sort" Padding="5,0,5,0" Margin="5" FontSize="8" 
                         IsEnabled="{Binding IsEditModeEnabled}" Click="SortButton_Click" />
             </StackPanel>

@@ -13,6 +13,8 @@ namespace PocketTDPControl
         private string machineName;
         private int cpuTemperture;
         private int gpuTemperture;
+        private int estimatedChargeRemaining;
+        private int estimatedRunTime;
         private bool isGpuAti;
         private int readingTDP;
         private int readingFPS;
@@ -25,12 +27,16 @@ namespace PocketTDPControl
         private bool isAyaneo2LogoRemapEnabled;
         private int mainWindowTop;
         private int mainWindowLeft;
+        private int mainWindowWidth;
 
         public string CpuName { get => cpuName; set { cpuName = value; RaisePropertyChanged(); } }
         public string GpuName { get => gpuName; set { gpuName = value; RaisePropertyChanged(); } }
         public string MachineName { get => machineName; set { machineName = value; RaisePropertyChanged(); } }
         public int CpuTemperture { get => cpuTemperture; set { cpuTemperture = value; RaisePropertyChanged(); } }
         public int GpuTemperture { get => gpuTemperture; set { gpuTemperture = value; RaisePropertyChanged(); } }
+        public int EstimatedChargeRemaining { get => estimatedChargeRemaining; set { estimatedChargeRemaining = value; RaisePropertyChanged(); } }
+
+        public int EstimatedRunTime { get => estimatedRunTime; set { estimatedRunTime = value; RaisePropertyChanged(); } }
 
         public bool IsGpuAti { get => isGpuAti; set { isGpuAti = value; RaisePropertyChanged(); } }
 
@@ -116,6 +122,13 @@ namespace PocketTDPControl
             get => mainWindowLeft; set
             {
                 mainWindowLeft = value; RaisePropertyChanged();
+            }
+        }
+        public int MainWindowWidth
+        {
+            get => mainWindowWidth; set
+            {
+                mainWindowWidth = value; RaisePropertyChanged();
             }
         }
 
