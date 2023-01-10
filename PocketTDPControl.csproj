@@ -207,7 +207,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="OpenHardwareMonitorLib.dll" />
+    <Content Include="OpenHardwareMonitorLib.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="ryzenadj\inpoutx64.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
