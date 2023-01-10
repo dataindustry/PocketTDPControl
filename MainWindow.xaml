@@ -76,7 +76,7 @@
             </ColumnDefinition>
         </Grid.ColumnDefinitions>
         
-        <Button Content="Setting" Grid.Column="0" Grid.Row="0" Style="{StaticResource MenuButton}" 
+        <Button Content="Pocket TDP Control" Grid.Column="0" Grid.Row="0" Style="{StaticResource MenuButton}" FontWeight="ExtraBold"
                 Click="SettingButton_Click" />
         <Button Content="Minimize" Grid.Column="1" Grid.Row="0" Style="{StaticResource MenuButton}" 
                 Click="MinimizeButton_Click" />

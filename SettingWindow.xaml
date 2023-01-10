@@ -3,17 +3,70 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PocketTDPControl"
+        xmlns:local="clr-namespace:PocketTDPControl" d:DataContext="{d:DesignInstance Type=local:TDPViewModel}"
         mc:Ignorable="d"
+        ShowInTaskbar="False"
         BorderBrush="Black" BorderThickness="1"
         AllowsTransparency="False" WindowStyle="None" WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
-        Width="200"
-        Height="80"
+        Width="300"
+        Height="250"
         Title="Setting">
-    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Button Content="Loopback Exampt" Margin="2" FontSize="10" Click="LoopbackExamptButton_Click" />
-        <CheckBox Content="Remap AYANEO 2 Logo Button" Margin="2" FontSize="10" IsChecked="{Binding IsRemapEnabled}" />
-        <Button Content="Close" Margin="2" FontSize="10" Click="CloseButton_Click" />
-    </StackPanel>
+    <Window.Resources>
+        <Style TargetType="{x:Type GroupBox}">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Width" Value="Auto"/>
+            <Setter Property="Height" Value="Auto"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="Padding" Value="2"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        </Style>
+        <Style TargetType="{x:Type StackPanel}">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Width" Value="Auto"/>
+            <Setter Property="Height" Value="Auto"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="20" />
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="0">
+
+            <GroupBox Header="Set Min and Max TDP">
+                <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Center">
+                    <GroupBox Header="Min" Padding="0" Margin="0">
+                        <TextBox Width="50" />
+                    </GroupBox>
+                    <GroupBox Header="Max" Padding="0" Margin="0">
+                        <TextBox Width="50" />
+                    </GroupBox>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Header="Apply Loopback Exampt for Gamebar Widget">
+                <Button Content="Apply" FontSize="10" Click="LoopbackExamptButton_Click" />
+            </GroupBox>
+
+            <GroupBox Header="Remap AYANEO 2 Logo Button to WIN+G">
+                <CheckBox HorizontalAlignment="Center" IsChecked="{Binding IsAyaneo2LogoRemapEnabled}" />
+            </GroupBox>
+
+            <GroupBox Header="Connectivity to Gamebar Widget Status">
+                <TextBlock Text="Connected." />
+            </GroupBox>
+
+        </StackPanel>
+
+        <Button Content="Close" Grid.Row="1" Grid.Column="0" Click="CloseButton_Click" />
+        
+    </Grid>
+    
 </Window>
