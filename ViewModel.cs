@@ -6,40 +6,51 @@ using System.Windows.Data;
 
 namespace PocketTDPControl
 {
-    public class TDPViewModel : ViewModelBase
+    public class ViewModel : ViewModelBase
     {
-        private string cpuName;
-        private string gpuName;
+
         private string machineName;
+
+        private string cpuName;
         private int cpuTemperture;
+        private int cpuClock;
+
+        private string gpuName;
         private int gpuTemperture;
+        private int gpuClock;
+
+        private int memoryAvailable;
+        private int memoryUsed;
+
         private int estimatedChargeRemaining;
         private int estimatedRunTime;
-        private bool isGpuAti;
-        private int readingTDP;
+
+        private int readingCpuTDP;
+        private int readingGpuTDP;
         private int readingFPS;
+
         private int minTDP;
         private int maxTDP;
+
         private int applyTDP;
+
         private ObservableCollection<int> presetTDP;
-        private int presetTDPIndex;
+        private int selectedPresetTDPIndex;
+
         private bool isEditModeEnabled;
         private bool isAyaneo2LogoRemapEnabled;
-        private int mainWindowTop;
-        private int mainWindowLeft;
-        private int mainWindowWidth;
 
+        public string MachineName { get => machineName; set { machineName = value; RaisePropertyChanged(); } }
         public string CpuName { get => cpuName; set { cpuName = value; RaisePropertyChanged(); } }
         public string GpuName { get => gpuName; set { gpuName = value; RaisePropertyChanged(); } }
-        public string MachineName { get => machineName; set { machineName = value; RaisePropertyChanged(); } }
         public int CpuTemperture { get => cpuTemperture; set { cpuTemperture = value; RaisePropertyChanged(); } }
         public int GpuTemperture { get => gpuTemperture; set { gpuTemperture = value; RaisePropertyChanged(); } }
+        public int CpuClock { get => cpuClock; set { cpuClock = value; RaisePropertyChanged(); } }
+        public int GpuClock { get => gpuClock; set { gpuClock = value; RaisePropertyChanged(); } }
+        public int MemoryAvailable { get => memoryAvailable; set { memoryAvailable = value; RaisePropertyChanged(); } }
+        public int MemoryUsed { get => memoryUsed; set { memoryUsed = value; RaisePropertyChanged(); } }
         public int EstimatedChargeRemaining { get => estimatedChargeRemaining; set { estimatedChargeRemaining = value; RaisePropertyChanged(); } }
-
         public int EstimatedRunTime { get => estimatedRunTime; set { estimatedRunTime = value; RaisePropertyChanged(); } }
-
-        public bool IsGpuAti { get => isGpuAti; set { isGpuAti = value; RaisePropertyChanged(); } }
-
         public bool IsEditModeEnabled
         {
             get => isEditModeEnabled; set
@@ -47,7 +58,6 @@ namespace PocketTDPControl
                 isEditModeEnabled = value; RaisePropertyChanged();
             }
         }
-
         public bool IsAyaneo2LogoRemapEnabled
         {
             get => isAyaneo2LogoRemapEnabled; set
@@ -55,15 +65,20 @@ namespace PocketTDPControl
                 isAyaneo2LogoRemapEnabled = value; RaisePropertyChanged();
             }
         }
-
-        public int ReadingTDP
+        public int ReadingCpuTDP
         {
-            get => readingTDP; set
+            get => readingCpuTDP; set
             {
-                readingTDP = value; RaisePropertyChanged();
+                readingCpuTDP = value; RaisePropertyChanged();
             }
         }
-
+        public int ReadingGpuTDP
+        {
+            get => readingGpuTDP; set
+            {
+                readingGpuTDP = value; RaisePropertyChanged();
+            }
+        }
         public int ReadingFPS
         {
             get => readingFPS; set
@@ -71,7 +86,6 @@ namespace PocketTDPControl
                 readingFPS = value; RaisePropertyChanged();
             }
         }
-
         public int MinTDP
         {
             get => minTDP; set
@@ -79,7 +93,6 @@ namespace PocketTDPControl
                 minTDP = value; RaisePropertyChanged();
             }
         }
-
         public int MaxTDP
         {
             get => maxTDP; set
@@ -87,7 +100,6 @@ namespace PocketTDPControl
                 maxTDP = value; RaisePropertyChanged();
             }
         }
-
         public int ApplyTDP
         {
             get => applyTDP; set
@@ -95,43 +107,18 @@ namespace PocketTDPControl
                 applyTDP = value; RaisePropertyChanged();
             }
         }
-
         public ObservableCollection<int> PresetTDP
         {
             get { return presetTDP; }
             set { presetTDP = value; RaisePropertyChanged(); }
         }
-
-        public int PresetTDPIndex
+        public int SelectedPresetTDPIndex
         {
-            get => presetTDPIndex; set
+            get => selectedPresetTDPIndex; set
             {
-                presetTDPIndex = value; RaisePropertyChanged();
+                selectedPresetTDPIndex = value; RaisePropertyChanged();
             }
         }
-        public int MainWindowTop
-        {
-            get => mainWindowTop; set
-            {
-                mainWindowTop = value; RaisePropertyChanged();
-            }
-        }
-
-        public int MainWindowLeft
-        {
-            get => mainWindowLeft; set
-            {
-                mainWindowLeft = value; RaisePropertyChanged();
-            }
-        }
-        public int MainWindowWidth
-        {
-            get => mainWindowWidth; set
-            {
-                mainWindowWidth = value; RaisePropertyChanged();
-            }
-        }
-
     }
 
 }

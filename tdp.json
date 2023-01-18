@@ -1,0 +1,22 @@
+{
+  "CpuName": "AMD Ryzen 7 6800U",
+  "GpuName": null,
+  "MachineName": "AYANEO 2",
+  "CpuTemperture": 0,
+  "GpuTemperture": 0,
+  "EstimatedChargeRemaining": 83,
+  "EstimatedRunTime": 146,
+  "IsEditModeEnabled": false,
+  "IsAyaneo2LogoRemapEnabled": true,
+  "ReadingTDP": 8,
+  "ReadingFPS": 0,
+  "MinTDP": 3,
+  "MaxTDP": 33,
+  "ApplyTDP": 33,
+  "PresetTDP": [ 5, 10, 15, 20, 22, 25, 28, 30, 33 ],
+  "SelectedPresetTDPIndex": 8,
+  "MainWindowTop": 528,
+  "MainWindowLeft": 816,
+  "MainWindowWidth": 0,
+  "IsInDesignMode": false
+}

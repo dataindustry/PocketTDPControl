@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PocketTDPControl" d:DataContext="{d:DesignInstance Type=local:TDPViewModel}"
+        xmlns:local="clr-namespace:PocketTDPControl" d:DataContext="{d:DesignInstance Type=local:ViewModel}"
         mc:Ignorable="d"
         Title="Pocket TDP Control"
         MouseDown="Window_MouseDown" Closing="Window_Closing"
@@ -84,26 +84,54 @@
                 Click="CloseButton_Click" />
 
         <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Vertical">
-            <GroupBox Header="Processor">
-                <TextBlock Text="{Binding CpuName}" />
-            </GroupBox>
+            
             <GroupBox Header="Machine">
-                <TextBlock Text="{Binding MachineName}" />
+                <StackPanel HorizontalAlignment="Stretch">
+                    <TextBlock Text="{Binding MachineName}" d:Text="ThinkPad" TextWrapping="Wrap" HorizontalAlignment="Center" Margin="5" />
+                    <Button Content="Setting" HorizontalAlignment="Stretch" />
+                </StackPanel>
             </GroupBox>
-            <GroupBox Header="Estimated Battery Remaining">
-                <ProgressBar Value="{Binding EstimatedChargeRemaining}" Height="10" Margin="5,10,5,10" />
+
+            <GroupBox Header="CPU" HorizontalContentAlignment="Stretch">
+                <StackPanel HorizontalAlignment="Center">
+                    <TextBlock Text="{Binding GpuName}" d:Text="INTEL Core i9 13900K" FontSize="10" />
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                        <GroupBox Header="Temp" Margin="0">
+                            <TextBlock Text="{Binding CpuTemperture}" d:Text="100" />
+                        </GroupBox>
+                        <GroupBox Header="Clock" Margin="0">
+                            <TextBlock Text="{Binding CpuClock}" d:Text="5800" />
+                        </GroupBox>
+                    </StackPanel>
+                </StackPanel>
             </GroupBox>
-            <GroupBox Header="Estimated Run Time">
-                <TextBlock Text="{Binding EstimatedRunTime}" />
+            <GroupBox Header="GPU" HorizontalContentAlignment="Stretch">
+                <StackPanel HorizontalAlignment="Center">
+                    <TextBlock Text="{Binding GpuName}" d:Text="NVIDIA GeForce RTX4090" FontSize="10" />
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                        <GroupBox Header="Temp" Margin="0">
+                            <TextBlock Text="{Binding GpuTemperture}" d:Text="100" />
+                        </GroupBox>
+                        <GroupBox Header="Clock" Margin="0">
+                            <TextBlock Text="{Binding GpuClock}" d:Text="6000" />
+                        </GroupBox>
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="Battery">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <ProgressBar Value="{Binding EstimatedChargeRemaining}" Height="10" Width="120" Margin="5,0,5,0" d:Value="50" />
+                    <TextBlock Text="{Binding EstimatedRunTime}" d:Text="120" Margin="2" />
+                </StackPanel>
             </GroupBox>
         </StackPanel>
 
         <StackPanel Grid.Column="0" Grid.Row="2" Orientation="Horizontal">
-            <GroupBox Header="Reading TDP">
-                <TextBlock Text="{Binding ReadingTDP}" />
+            <GroupBox Header="CPU TDP">
+                <TextBlock Text="{Binding ReadingCpuTDP}" d:Text="99" />
             </GroupBox>
-            <GroupBox Header="Reading FPS">
-                <TextBlock Text="{Binding ReadingFPS}" />
+            <GroupBox Header="GPU TDP">
+                <TextBlock Text="{Binding ReadingGpuTDP}" d:Text="99" />
             </GroupBox>
         </StackPanel>
 

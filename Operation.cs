@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows.Forms;
+using WindowsInput;
 using WindowsInput.Native;
 
 namespace PocketTDPControl
@@ -104,6 +106,34 @@ namespace PocketTDPControl
 
             Operation.ToModifierKey = toComboKey[0];
             Operation.ToKey = toComboKey[1];
+
+        }
+
+        public static void KeyboardHookKeyPress(KeyboardHook.HookStruct hookStruct, out bool handle)
+        {
+            handle = false;
+
+            foreach (var pair in Operation.FromComboKey.ToArray())
+            {
+                if (hookStruct.vkCode == pair.Key)
+                {
+                    Operation.FromComboKey[pair.Key] = true;
+                }
+            }
+
+            var checklist = Operation.FromComboKey.Values.Distinct();
+
+            if (checklist.Count() == 1 && checklist.First() == true)
+            {
+
+                foreach (var pair in Operation.FromComboKey.ToArray())
+                {
+                    Operation.FromComboKey[pair.Key] = false;
+                }
+                new InputSimulator().Keyboard.ModifiedKeyStroke(Operation.ToModifierKey, Operation.ToKey);
+            }
+
+            handle = true;
 
         }
     }

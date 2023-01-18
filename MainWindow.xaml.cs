@@ -11,10 +11,8 @@ using System.ServiceModel;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
-using Windows.UI.Xaml.Controls;
 using WindowsInput;
 using WindowsInput.Native;
 using static System.Management.ManagementObjectCollection;
@@ -27,9 +25,9 @@ namespace PocketTDPControl
     public partial class MainWindow : Window
     {
 
-        private TDPViewModel ViewModel;
+        private ViewModel ViewModel;
 
-        private readonly string FilePath = "tdp1.json";
+        private readonly string FilePath = "tdp.json";
 
         private ConcurrentQueue<int> TDPQueue;
 
@@ -112,7 +110,7 @@ namespace PocketTDPControl
         private void RemapAyaneo2IconKeyToGameBarKey()
         {
             CustomizeKeyboardHook = new KeyboardHook();
-            CustomizeKeyboardHook.InstallHook(this.KeyboardHookKeyPress);
+            CustomizeKeyboardHook.InstallHook(Operation.KeyboardHookKeyPress);
 
             if(this.ViewModel.IsAyaneo2LogoRemapEnabled)
                 Operation.RemapComboKey(
@@ -124,11 +122,11 @@ namespace PocketTDPControl
         {
             if (File.Exists(this.FilePath))
             {
-                this.ViewModel = JsonConvert.DeserializeObject<TDPViewModel>(File.ReadAllText(FilePath));
+                this.ViewModel = JsonConvert.DeserializeObject<ViewModel>(File.ReadAllText(FilePath));
             }
             else
             {
-                this.ViewModel = new TDPViewModel();
+                this.ViewModel = new ViewModel();
                 File.WriteAllText(this.FilePath, JsonConvert.SerializeObject(this.ViewModel));
             }
 
@@ -177,33 +175,6 @@ namespace PocketTDPControl
             TrayIcon.Click += TrayIcon_Click;
         }
 
-        private void KeyboardHookKeyPress(KeyboardHook.HookStruct hookStruct, out bool handle)
-        {
-            handle = false;
-
-            foreach (var pair in Operation.FromComboKey.ToArray())
-            {
-                if (hookStruct.vkCode == pair.Key)
-                {
-                    Operation.FromComboKey[pair.Key] = true;
-                }
-            }
-
-            var checklist = Operation.FromComboKey.Values.Distinct();
-
-            if (checklist.Count() == 1 && checklist.First() == true)
-            {
-
-                foreach (var pair in Operation.FromComboKey.ToArray())
-                {
-                    Operation.FromComboKey[pair.Key] = false;
-                }
-                new InputSimulator().Keyboard.ModifiedKeyStroke(Operation.ToModifierKey, Operation.ToKey);
-            }
-
-            handle = true;
-
-        }
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             TDPQueue.Enqueue(this.ViewModel.ApplyTDP);
@@ -290,7 +261,7 @@ namespace PocketTDPControl
         {
             var button = e.OriginalSource as System.Windows.Controls.Button;
             ChangeSudokuButtonStyle(button);
-            this.ViewModel.PresetTDPIndex = int.Parse(button.Name.Split('_')[1]);
+            this.ViewModel.SelectedPresetTDPIndex = int.Parse(button.Name.Split('_')[1]);
 
             if (this.ViewModel.IsEditModeEnabled)
             {
@@ -299,7 +270,7 @@ namespace PocketTDPControl
                 this.TDPSliderWindowDialog.Left = this.Left + this.Width + 5;
             }
             else {
-                this.ViewModel.ApplyTDP = this.ViewModel.PresetTDP[this.ViewModel.PresetTDPIndex];
+                this.ViewModel.ApplyTDP = this.ViewModel.PresetTDP[this.ViewModel.SelectedPresetTDPIndex];
             }
 
         }

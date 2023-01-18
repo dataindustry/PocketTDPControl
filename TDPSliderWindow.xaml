@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PocketTDPControl" d:DataContext="{d:DesignInstance Type=local:TDPViewModel}"
+        xmlns:local="clr-namespace:PocketTDPControl" d:DataContext="{d:DesignInstance Type=local:ViewModel}"
         BorderThickness="1" Visibility="{Binding IsEditModeEnabled, Mode=OneWay, Converter={StaticResource BoolToVis}}"
         AllowsTransparency="False" WindowStyle="None" ResizeMode="NoResize"
         ShowInTaskbar="False"
@@ -20,7 +20,7 @@
         <Slider.Value>
             <MultiBinding Converter="{StaticResource PresetTDPConverter}">
                 <Binding Path="PresetTDP" />
-                <Binding Path="PresetTDPIndex" />
+                <Binding Path="SelectedPresetTDPIndex" />
             </MultiBinding>
         </Slider.Value>
     </Slider>
