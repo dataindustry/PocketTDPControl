@@ -31,4 +31,5 @@ namespace PocketTDPControl
             return new object[] {this.presetTDP, this.selectedPresetTDPIndex};
         }
     }
+
 }

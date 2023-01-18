@@ -37,7 +37,7 @@ namespace PocketTDPControl
 
         private HardwareMonitor HWM;
 
-        private TDPSliderWindow TDPSliderWindowDialog;
+        private TDPWindow TDPWindowDialog;
 
         public MainWindow()
         {
@@ -63,8 +63,8 @@ namespace PocketTDPControl
 
         private void InitialDialog()
         {
-            this.TDPSliderWindowDialog = new TDPSliderWindow();
-            this.TDPSliderWindowDialog.DataContext = this.ViewModel;
+            this.TDPWindowDialog = new TDPWindow();
+            this.TDPWindowDialog.DataContext = this.ViewModel;
         }
 
         private void InitialSensorReading()
@@ -226,7 +226,7 @@ namespace PocketTDPControl
             this.TrayIcon.Visible = false;
             this.Activate();
         }
-        private void SettingButton_Click(object sender, RoutedEventArgs e)
+        private void GlobalSettingButton_Click(object sender, RoutedEventArgs e)
         {
             var setting = new SettingWindow();
             double[] d = new double[2];
@@ -241,7 +241,7 @@ namespace PocketTDPControl
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             File.WriteAllText(this.FilePath, JsonConvert.SerializeObject(this.ViewModel));
-            if (this.TDPSliderWindowDialog != null) this.TDPSliderWindowDialog.Close();
+            if (this.TDPWindowDialog != null) this.TDPWindowDialog.Close();
             this.Close();
         }
 
@@ -265,9 +265,9 @@ namespace PocketTDPControl
 
             if (this.ViewModel.IsEditModeEnabled)
             {
-                this.TDPSliderWindowDialog.WindowStartupLocation = WindowStartupLocation.Manual;
-                this.TDPSliderWindowDialog.Top = this.Top;
-                this.TDPSliderWindowDialog.Left = this.Left + this.Width + 5;
+                this.TDPWindowDialog.WindowStartupLocation = WindowStartupLocation.Manual;
+                this.TDPWindowDialog.Top = this.Top;
+                this.TDPWindowDialog.Left = this.Left + this.Width + 5;
             }
             else {
                 this.ViewModel.ApplyTDP = this.ViewModel.PresetTDP[this.ViewModel.SelectedPresetTDPIndex];
@@ -284,8 +284,25 @@ namespace PocketTDPControl
 
         private void EditModeCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            this.TDPSliderWindowDialog.Top = this.Top;
-            this.TDPSliderWindowDialog.Left = this.Left + this.Width + 5;
+            this.TDPWindowDialog.Top = this.Top;
+            this.TDPWindowDialog.Left = this.Left + this.Width + 5;
+        }
+
+        private void MachineSettingButton_Click(object sender, RoutedEventArgs e)
+        {
+
+            if (this.ViewModel.MachineName.StartsWith("Ayaneo 2"))
+            {
+                var setting = new Ayaneo2Window();
+                double[] d = new double[2];
+                d[0] = this.Top + this.Height / 2;
+                d[1] = this.Left + this.Width / 2;
+                setting.WindowStartupLocation = System.Windows.WindowStartupLocation.Manual;
+                setting.Top = d[0] - setting.Height / 2;
+                setting.Left = d[1] - setting.Width / 2;
+                setting.DataContext = this.ViewModel;
+                setting.ShowDialog();
+            }
         }
     }
 }

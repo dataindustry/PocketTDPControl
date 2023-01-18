@@ -129,6 +129,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Ayaneo2Window.xaml.cs">
+      <DependentUpon>Ayaneo2Window.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EstimatedRunTimeConverter.cs" />
     <Compile Include="HardwareMonitor.cs" />
     <Compile Include="KeyboardHook.cs" />
     <Compile Include="MainService.cs" />
@@ -136,10 +140,14 @@
     <Compile Include="SettingWindow.xaml.cs">
       <DependentUpon>SettingWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TDPSliderWindow.xaml.cs">
-      <DependentUpon>TDPSliderWindow.xaml</DependentUpon>
+    <Compile Include="TDPWindow.xaml.cs">
+      <DependentUpon>TDPWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel.cs" />
+    <Page Include="Ayaneo2Window.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -157,7 +165,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TDPSliderWindow.xaml">
+    <Page Include="TDPWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -218,7 +226,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="1.jpg" />
+    <Resource Include="ayaneo2_white.png" />
     <Content Include="ryzenadj\inpoutx64.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
