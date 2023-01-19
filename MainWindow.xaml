@@ -85,7 +85,7 @@
                 Click="CloseButton_Click" />
 
         <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Vertical">
-            
+
             <GroupBox Header="Machine">
                 <StackPanel HorizontalAlignment="Stretch">
                     <TextBlock Text="{Binding MachineName}" d:Text="ThinkPad" TextWrapping="Wrap" HorizontalAlignment="Center" Margin="5" />
@@ -94,76 +94,101 @@
             </GroupBox>
 
             <GroupBox Header="CPU" HorizontalContentAlignment="Stretch">
-                <StackPanel HorizontalAlignment="Center">
-                    <TextBlock Text="{Binding CpuName}" d:Text="INTEL Core i9 13900K" FontSize="10" />
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                <StackPanel HorizontalAlignment="Left">
+                    <TextBlock Text="{Binding CpuName}" d:Text="INTEL Core i9 13900K" FontSize="10" TextWrapping="Wrap" />
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                         <GroupBox Header="Temp" Margin="0">
                             <TextBlock Text="{Binding CpuTemperture}" d:Text="100" />
                         </GroupBox>
                         <GroupBox Header="Clock" Margin="0">
-                            <TextBlock Text="{Binding CpuClock}" d:Text="5800" />
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding CpuClock}" d:Text="9999" />
+                                <Button Margin="3" Content="*" Height="12" Width="12" IsEnabled="False" />
+                            </StackPanel>
+                        </GroupBox>
+                        <GroupBox Header="TDP" Margin="0">
+                            <TextBlock Text="{Binding ReadingCpuTDP}" d:Text="99" />
                         </GroupBox>
                     </StackPanel>
                 </StackPanel>
             </GroupBox>
+            
             <GroupBox Header="GPU" HorizontalContentAlignment="Stretch">
-                <StackPanel HorizontalAlignment="Center">
-                    <TextBlock Text="{Binding GpuName}" d:Text="NVIDIA GeForce RTX4090" FontSize="10" />
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                <StackPanel HorizontalAlignment="Left">
+                    <TextBlock Text="{Binding GpuName}" d:Text="NVIDIA GeForce RTX4090" FontSize="10" TextWrapping="Wrap" />
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                         <GroupBox Header="Temp" Margin="0">
                             <TextBlock Text="{Binding GpuTemperture}" d:Text="100" />
                         </GroupBox>
                         <GroupBox Header="Clock" Margin="0">
-                            <TextBlock Text="{Binding GpuClock}" d:Text="6000" />
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding GpuClock}" d:Text="9999" />
+                                <Button Margin="3" Content="*" Height="12" Width="12" IsEnabled="False" />
+                            </StackPanel>
+                        </GroupBox>
+                        <GroupBox Header="TDP" Margin="0">
+                            <TextBlock Text="{Binding ReadingGpuTDP}" d:Text="99" />
                         </GroupBox>
                     </StackPanel>
                 </StackPanel>
             </GroupBox>
+
             <GroupBox Header="Battery">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    <ProgressBar Value="{Binding EstimatedChargeRemaining}" Height="10" Width="120" Margin="5,0,5,0" d:Value="50" />
-                    <TextBlock Text="{Binding EstimatedRunTime, Converter={StaticResource EstimatedRunTimeConverter}}" d:Text="120" Margin="2" />
+                    <ProgressBar Value="{Binding EstimatedChargeRemaining}" Height="15" Width="125" Margin="5,0,5,0" d:Value="50" />
+                    <TextBlock Text="{Binding EstimatedRunTime, Converter={StaticResource EstimatedRunTimeConverter}}" d:Text="999" Margin="5,0,0,0" />
+                </StackPanel>
+            </GroupBox>
+
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+
+            <GroupBox Header="SLOW" Margin="5">
+                <StackPanel>
+                    <Slider Minimum="{Binding MinTDP}" Maximum="{Binding MaxTDP}" Height="260"
+                            Value="{Binding ApplyTDP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" d:Value="15" />
+                    <TextBlock Text="{Binding ApplyTDP}" d:Text="15" HorizontalAlignment="Center" Margin="5" />
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="FAST" Margin="5">
+                <StackPanel>
+                    <Slider Minimum="{Binding MinTDP}" Maximum="{Binding MaxTDP}" Height="260" 
+                            Value="{Binding ApplyTDP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" d:Value="15" />
+                    <TextBlock Text="{Binding ApplyTDP}" d:Text="15" HorizontalAlignment="Center" Margin="5" />
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="STAPM" Margin="5">
+                <StackPanel>
+                    <Slider Minimum="{Binding MinTDP}" Maximum="{Binding MaxTDP}" Height="260" 
+                            Value="{Binding ApplyTDP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" d:Value="15" />
+                    <TextBlock Text="{Binding ApplyTDP}" d:Text="15" HorizontalAlignment="Center" Margin="5" />
                 </StackPanel>
             </GroupBox>
         </StackPanel>
 
-        <StackPanel Grid.Column="0" Grid.Row="2" Orientation="Horizontal">
-            <GroupBox Header="CPU TDP">
-                <TextBlock Text="{Binding ReadingCpuTDP}" d:Text="99" />
-            </GroupBox>
-            <GroupBox Header="GPU TDP">
-                <TextBlock Text="{Binding ReadingGpuTDP}" d:Text="99" />
-            </GroupBox>
-        </StackPanel>
+        <GroupBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Margin="5" Header="Fan Speed Adjust">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
 
-        <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
-
-            <GroupBox Header="SLOW " Margin="5">
-                <Slider Minimum="{Binding MinTDP}" Maximum="{Binding MaxTDP}"
-            Value="{Binding ApplyTDP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            </GroupBox>
-            <GroupBox Header="FAST " Margin="5">
-                <Slider Minimum="{Binding MinTDP}" Maximum="{Binding MaxTDP}"
-            Value="{Binding ApplyTDP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            </GroupBox>
-            <GroupBox Header="STAPM" Margin="5">
-                <Slider Minimum="{Binding MinTDP}" Maximum="{Binding MaxTDP}"
-            Value="{Binding ApplyTDP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            </GroupBox>
-
-        </StackPanel>
-
-        <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal">
-            <GroupBox Header="SLOW ">
-                <TextBlock Text="{Binding ApplyTDP}" />
-            </GroupBox>
-            <GroupBox Header="FAST ">
-                <TextBlock Text="{Binding ApplyTDP}" />
-            </GroupBox>
-            <GroupBox Header="STAPM">
-                <TextBlock Text="{Binding ApplyTDP}" />
-            </GroupBox>
-        </StackPanel>
+                <GroupBox FontSize="8" Header="RPM" Margin="0" Padding="0">
+                    <TextBlock Text="{Binding FanSpeed}" FontSize="10" d:Text="6000" />
+                </GroupBox>
+                <GroupBox FontSize="8" Header="Precentage" Margin="0" Padding="0">
+                    <TextBlock Text="{Binding FanSpeedPrecentage}" FontSize="10" d:Text="100" />
+                </GroupBox>
+                <Slider Interval="10" Maximum="100" Minimum="10" TickFrequency="10" TickPlacement="Both"  Orientation="Horizontal" Width="190"
+                        Margin="5,2,0,0" FlowDirection="RightToLeft" IsEnabled="{Binding IsFanSpeedManualControlEnabled}" 
+                        Value="{Binding ApplyFanSpeedPrecentage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <CheckBox Margin="5,9,2,2" IsChecked="{Binding IsFanSpeedManualControlEnabled}"
+                          Checked="FanSpeedControlCheckBox_Checked" Unchecked="FanSpeedControlCheckBox_Unchecked" />
+                <Button Height="20" Margin="5" IsEnabled="False">
+                    <StackPanel Orientation="Horizontal" Margin="0">
+                        <CheckBox Margin="2,0,2,0" />
+                        <TextBlock Margin="2,2,2,0" Text="Curve" FontSize="8" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </GroupBox>
 
         <Grid Grid.Column="2" Grid.Row="1" Margin="10">
             <Grid.RowDefinitions>

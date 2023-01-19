@@ -1,8 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
-using System;
 using System.Collections.ObjectModel;
-using System.Globalization;
-using System.Windows.Data;
 
 namespace PocketTDPControl
 {
@@ -32,13 +29,17 @@ namespace PocketTDPControl
         private int minTDP;
         private int maxTDP;
 
+        private int fanSpeed;
+        private int fanSpeedPrecentage;
+        private int applyFanSpeedPrecentage;
+        private bool isFanSpeedManualControlEnabled;
+
         private int applyTDP;
 
         private ObservableCollection<int> presetTDP;
         private int selectedPresetTDPIndex;
 
         private bool isEditModeEnabled;
-        private bool isAyaneo2LogoRemapEnabled;
 
         public string MachineName { get => machineName; set { machineName = value; RaisePropertyChanged(); } }
         public string CpuName { get => cpuName; set { cpuName = value; RaisePropertyChanged(); } }
@@ -56,13 +57,6 @@ namespace PocketTDPControl
             get => isEditModeEnabled; set
             {
                 isEditModeEnabled = value; RaisePropertyChanged();
-            }
-        }
-        public bool IsAyaneo2LogoRemapEnabled
-        {
-            get => isAyaneo2LogoRemapEnabled; set
-            {
-                isAyaneo2LogoRemapEnabled = value; RaisePropertyChanged();
             }
         }
         public int ReadingCpuTDP
@@ -107,6 +101,34 @@ namespace PocketTDPControl
                 applyTDP = value; RaisePropertyChanged();
             }
         }
+        public int FanSpeed
+        {
+            get => fanSpeed; set
+            {
+                fanSpeed = value; RaisePropertyChanged();
+            }
+        }
+        public int FanSpeedPrecentage
+        {
+            get => fanSpeedPrecentage; set
+            {
+                fanSpeedPrecentage = value; RaisePropertyChanged();
+            }
+        }
+        public int ApplyFanSpeedPrecentage
+        {
+            get => applyFanSpeedPrecentage; set
+            {
+                applyFanSpeedPrecentage = value; RaisePropertyChanged();
+            }
+        }
+        public bool IsFanSpeedManualControlEnabled
+        {
+            get => isFanSpeedManualControlEnabled; set
+            {
+                isFanSpeedManualControlEnabled = value; RaisePropertyChanged();
+            }
+        }
         public ObservableCollection<int> PresetTDP
         {
             get { return presetTDP; }
@@ -119,6 +141,7 @@ namespace PocketTDPControl
                 selectedPresetTDPIndex = value; RaisePropertyChanged();
             }
         }
+
     }
 
 }

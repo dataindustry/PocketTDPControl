@@ -9,11 +9,11 @@ namespace PocketTDPControl
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            
-            int.TryParse(value as string, out var runtime);
+
+            var runtime = (int)value;
 
             // 71582788 = charging
-            return runtime == 71582788? "charging" : runtime.ToString();
+            return runtime == 71582788? "∞" : runtime.ToString();
 
         }
 

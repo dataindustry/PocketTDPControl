@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using WindowsInput;
 using WindowsInput.Native;
@@ -12,9 +13,6 @@ namespace PocketTDPControl
     internal class Operation
     {
 
-        public static Dictionary<int, bool> FromComboKey = new Dictionary<int, bool>();
-
-        public static VirtualKeyCode ToModifierKey, ToKey;
         public static bool Adjust(string type, int tdp)
         {
 
@@ -56,8 +54,6 @@ namespace PocketTDPControl
 
                 if (rkConfig.OpenSubKey(key).GetValue("DisplayName").ToString() == "PocketTDPControlWidget")
                 {
-                    Console.WriteLine(key);
-
                     Process p = new Process();
 
                     p.StartInfo.FileName = "CheckNetIsolation";
@@ -88,28 +84,13 @@ namespace PocketTDPControl
             return false;
         }
 
-        public static void RemapComboKey(Keys[] fromComboKey, VirtualKeyCode[] toComboKey)
-        {
-
-            foreach (var key in fromComboKey)
-            {
-
-                var keyCode = (int)key;
-
-                if (Operation.FromComboKey.ContainsKey(keyCode))
-                {
-                    Operation.FromComboKey[keyCode] = false;
-                }
-                else { Operation.FromComboKey.Add(keyCode, false); }
-
-            }
-
-            Operation.ToModifierKey = toComboKey[0];
-            Operation.ToKey = toComboKey[1];
-
-        }
-
-        public static void KeyboardHookKeyPress(KeyboardHook.HookStruct hookStruct, out bool handle)
+        /// <summary>
+        /// START keyboard mapping
+        /// </summary>
+        private static Dictionary<int, bool> FromComboKey = new Dictionary<int, bool>();
+        private static VirtualKeyCode ToModifierKey, ToKey = 0;
+        private static KeyboardHook KBH = new KeyboardHook();
+        private static void KeyboardHookKeyPress(KeyboardHook.HookStruct hookStruct, out bool handle)
         {
             handle = false;
 
@@ -136,5 +117,173 @@ namespace PocketTDPControl
             handle = true;
 
         }
+        public static void InitialKeyboardHook() {
+            KBH.InstallHook(KeyboardHookKeyPress);
+        }
+        public static void CustomKeyMapping(Keys[] fromComboKey, VirtualKeyCode[] toComboKey)
+        {
+            KBH.InstallHook(KeyboardHookKeyPress);
+
+            foreach (var key in fromComboKey)
+            {
+
+                var keyCode = (int)key;
+
+                if (Operation.FromComboKey.ContainsKey(keyCode))
+                {
+                    Operation.FromComboKey[keyCode] = false;
+                }
+                else { Operation.FromComboKey.Add(keyCode, false); }
+
+            }
+
+            Operation.ToModifierKey = toComboKey[0];
+            Operation.ToKey = toComboKey[1];
+
+        }
+        public static void CancelCustomKeyMapping() {
+
+            FromComboKey.Clear();
+            ToModifierKey = 0;
+            ToKey = 0;
+
+        }
+        public static void DisposeKeyboardHook() {
+
+            KBH?.UninstallHook();
+
+        }
+        // END keyboard mapping
+
+        /// <summary>
+        /// START Ayaneo 2 fan control via ec direct r/w
+        /// </summary>
+        public static Ols ols = null;
+        public static ushort reg_addr = 78;
+        public static ushort reg_data = 79;
+        public static event EventHandler OlsInitFailedEvent;
+        public static float GetAyaneo2FanSpeedPrecentage() => (float)ECRamDirectRead((ushort)6153);
+        public static void SetAyaneo2FanSpeedPrecentage(byte fanSpeedPrecentage) => ECRamDirectWrite((ushort)1099, fanSpeedPrecentage);
+        public static void SetAyaneo2FanSpeedToAutoControl() => ECRamDirectWrite((ushort)1098, (byte)0);
+        public static void SetAyaneo2FanSpeedToManualControl() => ECRamDirectWrite((ushort)1098, (byte)1);
+        public static byte ECRamDirectRead(ushort address)
+        {
+            if (ols == null)
+                OlsInit();
+            if (ols == null)
+                return 0;
+            byte num1 = (byte)((int)address >> 8 & (int)byte.MaxValue);
+            byte num2 = (byte)((uint)address & (uint)byte.MaxValue);
+            try
+            {
+                reg_addr = (ushort)78;
+                reg_data = (ushort)79;
+                ols.WriteIoPortByte(reg_addr, (byte)46);
+                ols.WriteIoPortByte(reg_data, (byte)17);
+                ols.WriteIoPortByte(reg_addr, (byte)47);
+                ols.WriteIoPortByte(reg_data, num1);
+                ols.WriteIoPortByte(reg_addr, (byte)46);
+                ols.WriteIoPortByte(reg_data, (byte)16);
+                ols.WriteIoPortByte(reg_addr, (byte)47);
+                ols.WriteIoPortByte(reg_data, num2);
+                ols.WriteIoPortByte(reg_addr, (byte)46);
+                ols.WriteIoPortByte(reg_data, (byte)18);
+                ols.WriteIoPortByte(reg_addr, (byte)47);
+                return ols.ReadIoPortByte(reg_data);
+            }
+            catch
+            {
+                OlsFree();
+                return 0;
+            }
+        }
+        public static void ECRamDirectWrite(ushort address, byte data)
+        {
+            if (ols == null)
+                OlsInit();
+            if (ols == null)
+                return;
+            byte num1 = (byte)((int)address >> 8 & (int)byte.MaxValue);
+            byte num2 = (byte)((uint)address & (uint)byte.MaxValue);
+            try
+            {
+                reg_addr = (ushort)78;
+                reg_data = (ushort)79;
+                ols.WriteIoPortByte(reg_addr, (byte)46);
+                ols.WriteIoPortByte(reg_data, (byte)17);
+                ols.WriteIoPortByte(reg_addr, (byte)47);
+                ols.WriteIoPortByte(reg_data, num1);
+                ols.WriteIoPortByte(reg_addr, (byte)46);
+                ols.WriteIoPortByte(reg_data, (byte)16);
+                ols.WriteIoPortByte(reg_addr, (byte)47);
+                ols.WriteIoPortByte(reg_data, num2);
+                ols.WriteIoPortByte(reg_addr, (byte)46);
+                ols.WriteIoPortByte(reg_data, (byte)18);
+                ols.WriteIoPortByte(reg_addr, (byte)47);
+                ols.WriteIoPortByte(reg_data, data);
+            }
+            catch
+            {
+                OlsFree();
+            }
+        }
+        public static bool OlsInit()
+        {
+            bool flag = false;
+            ols = new Ols();
+            switch (ols.GetStatus())
+            {
+                case 0:
+                    flag = true;
+                    break;
+            }
+            switch (ols.GetDllStatus())
+            {
+                case 0:
+                    flag = true;
+                    break;
+                case 1:
+                    int num1 = (int)MessageBox.Show("WingRing0 DLL Status Error!! OLS_UNSUPPORTED_PLATFORM");
+                    OlsFree();
+                    break;
+                case 2:
+                    int num2 = (int)MessageBox.Show("WingRing0 DLL Status Error!! OLS_DRIVER_NOT_LOADED");
+                    OlsFree();
+                    break;
+                case 3:
+                    int num3 = (int)MessageBox.Show("WingRing0 DLL Status Error!! OLS_DLL_DRIVER_NOT_FOUND");
+                    OlsFree();
+                    break;
+                case 4:
+                    int num4 = (int)MessageBox.Show("WingRing0 DLL Status Error!! OLS_DLL_DRIVER_UNLOADED");
+                    OlsFree();
+                    break;
+                case 5:
+                    int num5 = (int)MessageBox.Show("WingRing0 DLL Status Error!! DRIVER_NOT_LOADED_ON_NETWORK");
+                    OlsFree();
+                    break;
+                case 9:
+                    int num6 = (int)MessageBox.Show("WingRing0 DLL Status Error!! OLS_DLL_UNKNOWN_ERROR");
+                    OlsFree();
+                    break;
+            }
+            if (ols != null)
+                return flag;
+            RaiseOlsInitFailedEvent();
+            return false;
+        }
+        public static void OlsFree()
+        {
+            if (ols != null)
+                ols.Dispose();
+            ols = (Ols)null;
+        }
+        public static void RaiseOlsInitFailedEvent()
+        {
+            if (OlsInitFailedEvent == null)
+                return;
+            OlsInitFailedEvent((object)null, (EventArgs)new OlsInitFailedEventArgs());
+        }
+        // END Ayaneo 2 fan control via ec direct r/w
     }
 }

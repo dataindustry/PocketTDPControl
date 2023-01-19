@@ -31,13 +31,17 @@ namespace PocketTDPControl
 
         private ConcurrentQueue<int> TDPQueue;
 
-        private NotifyIcon TrayIcon;
+        private ConcurrentQueue<int> FanSpeedPrecentageQueue;
 
-        private KeyboardHook CustomizeKeyboardHook;
+        private NotifyIcon TrayIcon;
 
         private HardwareMonitor HWM;
 
         private TDPWindow TDPWindowDialog;
+
+        private SettingWindow SettingWindowDialog;
+
+        private Ayaneo2Window Ayaneo2WindowDialog;
 
         public MainWindow()
         {
@@ -49,11 +53,11 @@ namespace PocketTDPControl
 
             InitialWCFServer();
 
+            InitialFanController();
+
             InitialTDPAdjustor();
 
-            RemapAyaneo2IconKeyToGameBarKey();
-
-            CheckBattery();
+            InitialBatteryStatusReading();
 
             InitialSensorReading();
 
@@ -65,8 +69,13 @@ namespace PocketTDPControl
         {
             this.TDPWindowDialog = new TDPWindow();
             this.TDPWindowDialog.DataContext = this.ViewModel;
-        }
 
+            this.SettingWindowDialog = new SettingWindow();
+            this.SettingWindowDialog.DataContext = this.ViewModel;
+
+            this.Ayaneo2WindowDialog= new Ayaneo2Window();
+            this.Ayaneo2WindowDialog.DataContext = this.ViewModel;
+        }
         private void InitialSensorReading()
         {
             HWM = new HardwareMonitor(this.ViewModel);
@@ -78,13 +87,20 @@ namespace PocketTDPControl
 
                     HWM.Update();
 
+                    if (this.ViewModel.MachineName.StartsWith("AYANEO 2")) {
+                        this.ViewModel.FanSpeedPrecentage = (int)((double)Operation.GetAyaneo2FanSpeedPrecentage() * 100 / (double)byte.MaxValue);
+                        this.ViewModel.FanSpeed = this.ViewModel.FanSpeedPrecentage * 5404 / 100;
+
+                        if (!this.ViewModel.IsFanSpeedManualControlEnabled) this.ViewModel.ApplyFanSpeedPrecentage = this.ViewModel.FanSpeedPrecentage;
+
+                    }
+
                     Thread.Sleep(1000);
                 }
             });
             t.Start();
         }
-
-        private void CheckBattery()
+        private void InitialBatteryStatusReading()
         {
             
             Task t = new Task(() =>
@@ -106,17 +122,33 @@ namespace PocketTDPControl
             t.Start();
             
         }
+        private void InitialFanController() {
 
-        private void RemapAyaneo2IconKeyToGameBarKey()
-        {
-            CustomizeKeyboardHook = new KeyboardHook();
-            CustomizeKeyboardHook.InstallHook(Operation.KeyboardHookKeyPress);
+            this.FanSpeedPrecentageQueue = new ConcurrentQueue<int>();
 
-            if(this.ViewModel.IsAyaneo2LogoRemapEnabled)
-                Operation.RemapComboKey(
-                    new[] { Keys.LWin, Keys.RControlKey, Keys.F17 },
-                    new[] { VirtualKeyCode.LWIN, VirtualKeyCode.VK_G });
-        
+            if (this.ViewModel.MachineName.StartsWith("AYANEO 2"))
+            {
+
+                Task t = new Task(() =>
+                {
+                    while (true)
+                    {
+
+                        if (FanSpeedPrecentageQueue.IsEmpty)
+                        {
+                            Thread.Sleep(500);
+                            continue;
+                        }
+
+                        if(FanSpeedPrecentageQueue.TryDequeue(out var fanSpeedPrecentage) && this.ViewModel.IsFanSpeedManualControlEnabled)
+                        {
+                            Operation.SetAyaneo2FanSpeedPrecentage((byte)fanSpeedPrecentage);
+                        }
+                    }
+                });
+                t.Start();
+            }
+
         }
         private void InitialViewModel()
         {
@@ -147,15 +179,15 @@ namespace PocketTDPControl
 
                     if (TDPQueue.IsEmpty)
                     {
-                        Thread.Sleep(100);
+                        Thread.Sleep(500);
                         continue;
                     }
 
-                    TDPQueue.TryDequeue(out var tdp);
-
-                    Operation.Adjust("a", this.ViewModel.ApplyTDP);
-                    Operation.Adjust("b", this.ViewModel.ApplyTDP);
-                    Operation.Adjust("c", this.ViewModel.ApplyTDP);
+                    if(TDPQueue.TryDequeue(out var tdp)) { 
+                        Operation.Adjust("a", this.ViewModel.ApplyTDP);
+                        Operation.Adjust("b", this.ViewModel.ApplyTDP);
+                        Operation.Adjust("c", this.ViewModel.ApplyTDP);
+                    }
 
                 }
             });
@@ -171,27 +203,39 @@ namespace PocketTDPControl
             TrayIcon = new NotifyIcon();
             TrayIcon.Text = this.Title;
             TrayIcon.Visible = true;
-            TrayIcon.Icon = new Icon(@"TrayIcon.ico");
+            TrayIcon.Icon = new Icon(@"resources/TrayIcon.ico");
             TrayIcon.Click += TrayIcon_Click;
+        }
+
+        private void ChangeSudokuButtonStyle(System.Windows.Controls.Button button)
+        {
+
+            var grid = button.Parent as System.Windows.Controls.Grid;
+            foreach (var child in grid.Children)
+            {
+                var sudokuButton = child as System.Windows.Controls.Button;
+                sudokuButton.Background = System.Windows.Media.Brushes.Transparent;
+            }
+
+            button.Background = System.Windows.Media.Brushes.Aqua;
+        }
+        private void CenterizeWindowRelativeToMainWindow(Window window)
+        {
+
+            double[] d = new double[2];
+            d[0] = this.Top + this.Height / 2;
+            d[1] = this.Left + this.Width / 2;
+            window.WindowStartupLocation = WindowStartupLocation.Manual;
+            window.Top = d[0] - window.Height / 2;
+            window.Left = d[1] - window.Width / 2;
+
         }
 
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             TDPQueue.Enqueue(this.ViewModel.ApplyTDP);
 
-            if(e.PropertyName == nameof(this.ViewModel.IsAyaneo2LogoRemapEnabled)) {
-                if (this.ViewModel.IsAyaneo2LogoRemapEnabled)
-                {
-                    Operation.RemapComboKey(
-                    new[] { Keys.LWin, Keys.RControlKey, Keys.F17 },
-                    new[] { VirtualKeyCode.LWIN, VirtualKeyCode.VK_G });
-                }
-                else {
-                    Operation.FromComboKey.Clear();
-                    Operation.ToModifierKey = 0;
-                    Operation.ToKey = 0;
-                }
-            }
+            FanSpeedPrecentageQueue.Enqueue(this.ViewModel.ApplyFanSpeedPrecentage);
         }
         private void AdjustButton_Click(object sender, RoutedEventArgs e)
         {
@@ -209,7 +253,7 @@ namespace PocketTDPControl
             this.TrayIcon.Visible = false;
             this.TrayIcon.Dispose();
 
-            CustomizeKeyboardHook?.UninstallHook();
+            Operation.DisposeKeyboardHook();
 
             File.WriteAllText(this.FilePath, JsonConvert.SerializeObject(this.ViewModel));
         }
@@ -226,37 +270,15 @@ namespace PocketTDPControl
             this.TrayIcon.Visible = false;
             this.Activate();
         }
-        private void GlobalSettingButton_Click(object sender, RoutedEventArgs e)
-        {
-            var setting = new SettingWindow();
-            double[] d = new double[2];
-            d[0] = this.Top + this.Height / 2;
-            d[1] = this.Left + this.Width / 2;
-            setting.WindowStartupLocation = System.Windows.WindowStartupLocation.Manual;
-            setting.Top = d[0] - setting.Height / 2;
-            setting.Left = d[1] - setting.Width / 2;
-            setting.DataContext = this.ViewModel;
-            setting.ShowDialog();
-        }
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             File.WriteAllText(this.FilePath, JsonConvert.SerializeObject(this.ViewModel));
-            if (this.TDPWindowDialog != null) this.TDPWindowDialog.Close();
+
+            this.TDPWindowDialog?.Close();
+            this.Ayaneo2WindowDialog?.Close();
+            this.SettingWindowDialog?.Close();
             this.Close();
         }
-
-        private void ChangeSudokuButtonStyle(System.Windows.Controls.Button button) {
-
-            var grid = button.Parent as System.Windows.Controls.Grid;
-            foreach (var child in grid.Children)
-            {
-                var sudokuButton = child as System.Windows.Controls.Button;
-                sudokuButton.Background = System.Windows.Media.Brushes.Transparent;
-            }
-
-            button.Background = System.Windows.Media.Brushes.Aqua;
-        }
-
         private void SudokuButton_Click(object sender, RoutedEventArgs e)
         {
             var button = e.OriginalSource as System.Windows.Controls.Button;
@@ -274,35 +296,44 @@ namespace PocketTDPControl
             }
 
         }
-
         private void SortButton_Click(object sender, RoutedEventArgs e)
         {
             var newPresetTDP = this.ViewModel.PresetTDP.ToArray<int>();
             Array.Sort(newPresetTDP);
             this.ViewModel.PresetTDP = new ObservableCollection<int>(newPresetTDP);
         }
-
         private void EditModeCheckBox_Checked(object sender, RoutedEventArgs e)
         {
             this.TDPWindowDialog.Top = this.Top;
             this.TDPWindowDialog.Left = this.Left + this.Width + 5;
         }
-
+        private void GlobalSettingButton_Click(object sender, RoutedEventArgs e)
+        {
+            CenterizeWindowRelativeToMainWindow(SettingWindowDialog);
+            this.SettingWindowDialog.Visibility = Visibility.Visible;
+            this.SettingWindowDialog.Show();
+            this.SettingWindowDialog.Activate();
+        }
         private void MachineSettingButton_Click(object sender, RoutedEventArgs e)
         {
 
-            if (this.ViewModel.MachineName.StartsWith("Ayaneo 2"))
+            if (this.ViewModel.MachineName.StartsWith("AYANEO 2"))
             {
-                var setting = new Ayaneo2Window();
-                double[] d = new double[2];
-                d[0] = this.Top + this.Height / 2;
-                d[1] = this.Left + this.Width / 2;
-                setting.WindowStartupLocation = System.Windows.WindowStartupLocation.Manual;
-                setting.Top = d[0] - setting.Height / 2;
-                setting.Left = d[1] - setting.Width / 2;
-                setting.DataContext = this.ViewModel;
-                setting.ShowDialog();
+                CenterizeWindowRelativeToMainWindow(Ayaneo2WindowDialog);
+                Ayaneo2WindowDialog.Visibility = Visibility.Visible;
+                Ayaneo2WindowDialog.Show();
+                Ayaneo2WindowDialog.Activate();
             }
+        }
+
+        private void FanSpeedControlCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            Operation.SetAyaneo2FanSpeedToManualControl();
+        }
+
+        private void FanSpeedControlCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            Operation.SetAyaneo2FanSpeedToAutoControl();
         }
     }
 }

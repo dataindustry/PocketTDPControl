@@ -21,17 +21,17 @@
         <Canvas Grid.Row="1" Grid.Column="0">
             
             <Canvas.Background>
-                <ImageBrush ImageSource="/ayaneo2_white.png" Stretch="UniformToFill"/>
+                <ImageBrush ImageSource="/resources/ayaneo2_white.png" Stretch="UniformToFill"/>
             </Canvas.Background>
             
             <Line X1="650" X2="700" Y1="315" Y2="380" StrokeThickness="8" Fill="Black" Stroke="Aqua" Opacity="0.7" />
 
             <GroupBox Header="Ayaneo2 LOGO Button" Canvas.Left="620" Canvas.Top="380">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <CheckBox Margin="2,3,2,2" />
-                    <TextBox Width="40" Margin="2" d:Text="Win" />
-                    <TextBlock Text="+" Margin="0,2,0,2" />
-                    <TextBox Width="40" Margin="2" d:Text="G" />
+                    <CheckBox Margin="3" Checked="Ayaneo2LOGOCheckBox_Checked" Unchecked="Ayaneo2LOGOCheckBox_Unchecked" />
+                    <TextBox Width="40" Margin="2" Text="Win" IsEnabled="False" />
+                    <TextBlock Text="+" Margin="2" />
+                    <TextBox Width="40" Margin="2" Text="G" IsEnabled="False" />
                 </StackPanel>
             </GroupBox>
             
