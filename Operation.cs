@@ -13,7 +13,7 @@ namespace PocketTDPControl
     internal class Operation
     {
 
-        public static bool Adjust(string type, int tdp)
+        public static void Adjust(string type, int tdp)
         {
 
             Process p = new Process();
@@ -29,18 +29,34 @@ namespace PocketTDPControl
             p.Start();
 
             var successResult = p.StandardOutput.ReadToEnd();
+            Console.WriteLine(successResult);
 
             p.Close();
             p.Dispose();
 
-            if (successResult.StartsWith("Sucessfully set"))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+        }
+
+        public static void Adjust(string[] type, int[] tdp)
+        {
+
+            Process p = new Process();
+
+            p.StartInfo.FileName = "./ryzenadj/ryzenadj.exe";
+            p.StartInfo.Arguments = $"-{type[0]} {tdp[0] * 1000} -{type[1]} {tdp[1] * 1000} -{type[2]} {tdp[2] * 1000}";
+            p.StartInfo.UseShellExecute = false;
+            p.StartInfo.RedirectStandardInput = true;
+            p.StartInfo.RedirectStandardOutput = true;
+            p.StartInfo.RedirectStandardError = true;
+            p.StartInfo.CreateNoWindow = true;
+
+            p.Start();
+
+            var successResult = p.StandardOutput.ReadToEnd();
+            Console.WriteLine(successResult);
+
+            p.Close();
+            p.Dispose();
+
         }
 
         public static bool LoopbackExempt()

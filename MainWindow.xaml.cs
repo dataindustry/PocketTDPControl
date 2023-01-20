@@ -184,9 +184,12 @@ namespace PocketTDPControl
                     }
 
                     if(TDPQueue.TryDequeue(out var tdp)) { 
-                        Operation.Adjust("a", this.ViewModel.ApplyTDP);
-                        Operation.Adjust("b", this.ViewModel.ApplyTDP);
-                        Operation.Adjust("c", this.ViewModel.ApplyTDP);
+                        // Operation.Adjust("a", this.ViewModel.ApplyTDP);
+                        // Operation.Adjust("b", this.ViewModel.ApplyTDP);
+                        // Operation.Adjust("c", this.ViewModel.ApplyTDP);
+                        Operation.Adjust(
+                            new string[]{ "a", "b", "c"}, 
+                            new int[] { this.ViewModel.ApplyTDP, this.ViewModel.ApplyTDP, this.ViewModel.ApplyTDP });
                     }
 
                 }
@@ -203,7 +206,7 @@ namespace PocketTDPControl
             TrayIcon = new NotifyIcon();
             TrayIcon.Text = this.Title;
             TrayIcon.Visible = true;
-            TrayIcon.Icon = new Icon(@"resources/TrayIcon.ico");
+            TrayIcon.Icon = new Icon(@"./TrayIcon.ico");
             TrayIcon.Click += TrayIcon_Click;
         }
 
@@ -233,9 +236,11 @@ namespace PocketTDPControl
 
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            TDPQueue.Enqueue(this.ViewModel.ApplyTDP);
+            if(e.PropertyName == nameof(this.ViewModel.ApplyTDP))
+                    TDPQueue.Enqueue(this.ViewModel.ApplyTDP);
 
-            FanSpeedPrecentageQueue.Enqueue(this.ViewModel.ApplyFanSpeedPrecentage);
+            if(e.PropertyName == nameof(this.ViewModel.ApplyFanSpeedPrecentage) && this.ViewModel.IsFanSpeedManualControlEnabled)
+                FanSpeedPrecentageQueue.Enqueue(this.ViewModel.ApplyFanSpeedPrecentage);
         }
         private void AdjustButton_Click(object sender, RoutedEventArgs e)
         {

@@ -21,7 +21,7 @@
         <Canvas Grid.Row="1" Grid.Column="0">
             
             <Canvas.Background>
-                <ImageBrush ImageSource="/resources/ayaneo2_white.png" Stretch="UniformToFill"/>
+                <ImageBrush ImageSource="./ayaneo2_white.png" Stretch="UniformToFill"/>
             </Canvas.Background>
             
             <Line X1="650" X2="700" Y1="315" Y2="380" StrokeThickness="8" Fill="Black" Stroke="Aqua" Opacity="0.7" />
