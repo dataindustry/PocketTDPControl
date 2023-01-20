@@ -7,6 +7,8 @@ namespace PocketTDPControl
     {
 
         private string machineName;
+        private MachineType machine;
+        private bool isSupportedMachine;
 
         private string cpuName;
         private int cpuTemperture;
@@ -42,6 +44,8 @@ namespace PocketTDPControl
         private bool isEditModeEnabled;
 
         public string MachineName { get => machineName; set { machineName = value; RaisePropertyChanged(); } }
+        public MachineType Machine { get => machine; set { machine = value; RaisePropertyChanged(); } }
+        public bool IsSupportedMachine { get => isSupportedMachine; set { isSupportedMachine = value; RaisePropertyChanged(); } }
         public string CpuName { get => cpuName; set { cpuName = value; RaisePropertyChanged(); } }
         public string GpuName { get => gpuName; set { gpuName = value; RaisePropertyChanged(); } }
         public int CpuTemperture { get => cpuTemperture; set { cpuTemperture = value; RaisePropertyChanged(); } }

@@ -89,7 +89,7 @@
             <GroupBox Header="Machine">
                 <StackPanel HorizontalAlignment="Stretch">
                     <TextBlock Text="{Binding MachineName}" d:Text="ThinkPad" TextWrapping="Wrap" HorizontalAlignment="Center" Margin="5" />
-                    <Button Content="Setting" HorizontalAlignment="Stretch" Click="MachineSettingButton_Click" />
+                    <Button Content="Setting" HorizontalAlignment="Stretch" Click="MachineSettingButton_Click" IsEnabled="{Binding IsSupportedMachine}" />
                 </StackPanel>
             </GroupBox>
 
@@ -167,7 +167,8 @@
             </GroupBox>
         </StackPanel>
 
-        <GroupBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Margin="5" Header="Fan Speed Adjust">
+        <GroupBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Margin="5" Header="Fan Speed Adjust" 
+                  Visibility="{Binding IsSupportedMachine, Converter={StaticResource BoolToVis}}">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
 
                 <GroupBox FontSize="8" Header="RPM" Margin="0" Padding="0">

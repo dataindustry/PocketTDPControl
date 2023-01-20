@@ -12,7 +12,18 @@ namespace PocketTDPControl
 {
     internal class Operation
     {
+        public static MachineType DetermineMachineType(string machineName) {
 
+            MachineType machineType;
+        
+            var name = machineName.Replace(" ", "").ToUpper();
+            if(Enum.TryParse(name, true, out machineType))
+            {
+                return machineType;
+            }
+            else { return MachineType.None; }
+
+        }
         public static void Adjust(string type, int tdp)
         {
 
@@ -174,14 +185,14 @@ namespace PocketTDPControl
         /// <summary>
         /// START Ayaneo 2 fan control via ec direct r/w
         /// </summary>
-        public static Ols ols = null;
-        public static ushort reg_addr = 78;
-        public static ushort reg_data = 79;
-        public static event EventHandler OlsInitFailedEvent;
-        public static float GetAyaneo2FanSpeedPrecentage() => (float)ECRamDirectRead((ushort)6153);
-        public static void SetAyaneo2FanSpeedPrecentage(byte fanSpeedPrecentage) => ECRamDirectWrite((ushort)1099, fanSpeedPrecentage);
-        public static void SetAyaneo2FanSpeedToAutoControl() => ECRamDirectWrite((ushort)1098, (byte)0);
-        public static void SetAyaneo2FanSpeedToManualControl() => ECRamDirectWrite((ushort)1098, (byte)1);
+        private static Ols ols = null;
+        private static ushort reg_addr = 78;
+        private static ushort reg_data = 79;
+        private static event EventHandler OlsInitFailedEvent;
+        public static float GetAYANEO2FanSpeedPrecentage() => (float)ECRamDirectRead((ushort)6153);
+        public static void SetAYANEO2FanSpeedPrecentage(byte fanSpeedPrecentage) => ECRamDirectWrite((ushort)1099, fanSpeedPrecentage);
+        public static void SetAYANEO2FanSpeedToAutoControl() => ECRamDirectWrite((ushort)1098, (byte)0);
+        public static void SetAYANEO2FanSpeedToManualControl() => ECRamDirectWrite((ushort)1098, (byte)1);
         public static byte ECRamDirectRead(ushort address)
         {
             if (ols == null)

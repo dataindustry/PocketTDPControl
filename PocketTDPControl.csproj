@@ -137,6 +137,7 @@
     </Compile>
     <Compile Include="EstimatedRunTimeConverter.cs" />
     <Compile Include="HardwareMonitor.cs" />
+    <Compile Include="MachineType.cs" />
     <Compile Include="Ols.cs" />
     <Compile Include="KeyboardHook.cs" />
     <Compile Include="MainService.cs" />

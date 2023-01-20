@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Management;
+using System.Reflection;
 using System.ServiceModel;
 using System.Threading;
 using System.Threading.Tasks;
@@ -49,6 +50,8 @@ namespace PocketTDPControl
 
             InitialViewModel();
 
+            InitialSensorReading();
+
             InitialTray();
 
             InitialWCFServer();
@@ -58,8 +61,6 @@ namespace PocketTDPControl
             InitialTDPAdjustor();
 
             InitialBatteryStatusReading();
-
-            InitialSensorReading();
 
             InitialDialog();
 
@@ -87,12 +88,20 @@ namespace PocketTDPControl
 
                     HWM.Update();
 
-                    if (this.ViewModel.MachineName.StartsWith("AYANEO 2")) {
-                        this.ViewModel.FanSpeedPrecentage = (int)((double)Operation.GetAyaneo2FanSpeedPrecentage() * 100 / (double)byte.MaxValue);
-                        this.ViewModel.FanSpeed = this.ViewModel.FanSpeedPrecentage * 5404 / 100;
+                    this.ViewModel.Machine = Operation.DetermineMachineType(this.ViewModel.MachineName);
+
+                    if (this.ViewModel.Machine != MachineType.None) {
+
+                        this.ViewModel.IsSupportedMachine= true;
+                        MethodInfo method = typeof(Operation).GetMethod($"Get{this.ViewModel.Machine}FanSpeedPrecentage");
+                        this.ViewModel.FanSpeedPrecentage = (int)(Convert.ToDouble(method.Invoke(null, null)) * 100 / (double)byte.MaxValue);
+                        this.ViewModel.FanSpeed = this.ViewModel.FanSpeedPrecentage * Convert.ToInt32(this.ViewModel.Machine) / 100;
 
                         if (!this.ViewModel.IsFanSpeedManualControlEnabled) this.ViewModel.ApplyFanSpeedPrecentage = this.ViewModel.FanSpeedPrecentage;
-
+                    }
+                    else
+                    {
+                        this.ViewModel.IsSupportedMachine = false;
                     }
 
                     Thread.Sleep(1000);
@@ -126,7 +135,7 @@ namespace PocketTDPControl
 
             this.FanSpeedPrecentageQueue = new ConcurrentQueue<int>();
 
-            if (this.ViewModel.MachineName.StartsWith("AYANEO 2"))
+            if (this.ViewModel.Machine != MachineType.None)
             {
 
                 Task t = new Task(() =>
@@ -140,9 +149,10 @@ namespace PocketTDPControl
                             continue;
                         }
 
-                        if(FanSpeedPrecentageQueue.TryDequeue(out var fanSpeedPrecentage) && this.ViewModel.IsFanSpeedManualControlEnabled)
+                        if (FanSpeedPrecentageQueue.TryDequeue(out var fanSpeedPrecentage) && this.ViewModel.IsFanSpeedManualControlEnabled)
                         {
-                            Operation.SetAyaneo2FanSpeedPrecentage((byte)fanSpeedPrecentage);
+                            MethodInfo method = typeof(Operation).GetMethod($"Set{this.ViewModel.Machine}FanSpeedPrecentage");
+                            method.Invoke(null, new object[] { (byte)fanSpeedPrecentage });
                         }
                     }
                 });
@@ -183,10 +193,7 @@ namespace PocketTDPControl
                         continue;
                     }
 
-                    if(TDPQueue.TryDequeue(out var tdp)) { 
-                        // Operation.Adjust("a", this.ViewModel.ApplyTDP);
-                        // Operation.Adjust("b", this.ViewModel.ApplyTDP);
-                        // Operation.Adjust("c", this.ViewModel.ApplyTDP);
+                    if(TDPQueue.TryDequeue(out var tdp)) {
                         Operation.Adjust(
                             new string[]{ "a", "b", "c"}, 
                             new int[] { this.ViewModel.ApplyTDP, this.ViewModel.ApplyTDP, this.ViewModel.ApplyTDP });
@@ -280,6 +287,8 @@ namespace PocketTDPControl
             File.WriteAllText(this.FilePath, JsonConvert.SerializeObject(this.ViewModel));
 
             this.TDPWindowDialog?.Close();
+
+            // TODO
             this.Ayaneo2WindowDialog?.Close();
             this.SettingWindowDialog?.Close();
             this.Close();
@@ -322,8 +331,10 @@ namespace PocketTDPControl
         private void MachineSettingButton_Click(object sender, RoutedEventArgs e)
         {
 
-            if (this.ViewModel.MachineName.StartsWith("AYANEO 2"))
+            
+            if (this.ViewModel.Machine != MachineType.None)
             {
+                // TODO
                 CenterizeWindowRelativeToMainWindow(Ayaneo2WindowDialog);
                 Ayaneo2WindowDialog.Visibility = Visibility.Visible;
                 Ayaneo2WindowDialog.Show();
@@ -333,12 +344,12 @@ namespace PocketTDPControl
 
         private void FanSpeedControlCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            Operation.SetAyaneo2FanSpeedToManualControl();
+            typeof(Operation).GetMethod($"Set{this.ViewModel.Machine}FanSpeedToManualControl").Invoke(null, null);
         }
 
         private void FanSpeedControlCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
-            Operation.SetAyaneo2FanSpeedToAutoControl();
+            typeof(Operation).GetMethod($"Set{this.ViewModel.Machine}FanSpeedToAutoControl").Invoke(null, null);
         }
     }
 }
