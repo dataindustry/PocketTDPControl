@@ -90,6 +90,9 @@
       <HintPath>packages\Newtonsoft.Json.13.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.CodeDom, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.CodeDom.7.0.0\lib\net462\System.CodeDom.dll</HintPath>
+    </Reference>
     <Reference Include="System.Collections.NonGeneric, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.Collections.NonGeneric.4.3.0\lib\net46\System.Collections.NonGeneric.dll</HintPath>
       <Private>True</Private>
@@ -132,12 +135,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Ayaneo2Window.xaml.cs">
-      <DependentUpon>Ayaneo2Window.xaml</DependentUpon>
+    <Compile Include="AYANEO2Window.xaml.cs">
+      <DependentUpon>AYANEO2Window.xaml</DependentUpon>
     </Compile>
     <Compile Include="EstimatedRunTimeConverter.cs" />
     <Compile Include="HardwareMonitor.cs" />
     <Compile Include="MachineType.cs" />
+    <Compile Include="MachineWindow.xaml.cs">
+      <DependentUpon>MachineWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Ols.cs" />
     <Compile Include="KeyboardHook.cs" />
     <Compile Include="MainService.cs" />
@@ -149,7 +155,11 @@
       <DependentUpon>TDPWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel.cs" />
-    <Page Include="Ayaneo2Window.xaml">
+    <Page Include="AYANEO2Window.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MachineWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -200,6 +210,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="README.md" />
     <None Include="ryzenadj\WinRing0x64.sys">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

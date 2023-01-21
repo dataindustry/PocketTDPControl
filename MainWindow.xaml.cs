@@ -41,8 +41,13 @@ namespace PocketTDPControl
         private TDPWindow TDPWindowDialog;
 
         private SettingWindow SettingWindowDialog;
+        private Window MachineWindow;
 
-        private Ayaneo2Window Ayaneo2WindowDialog;
+        private MethodInfo GetFanSpeedPrecentage;
+        private MethodInfo SetFanSpeedPrecentage;
+        private MethodInfo SetFanSpeedToAutoControl;
+        private MethodInfo SetFanSpeedToManualControl;
+
 
         public MainWindow()
         {
@@ -74,8 +79,6 @@ namespace PocketTDPControl
             this.SettingWindowDialog = new SettingWindow();
             this.SettingWindowDialog.DataContext = this.ViewModel;
 
-            this.Ayaneo2WindowDialog= new Ayaneo2Window();
-            this.Ayaneo2WindowDialog.DataContext = this.ViewModel;
         }
         private void InitialSensorReading()
         {
@@ -93,8 +96,11 @@ namespace PocketTDPControl
                     if (this.ViewModel.Machine != MachineType.None) {
 
                         this.ViewModel.IsSupportedMachine= true;
-                        MethodInfo method = typeof(Operation).GetMethod($"Get{this.ViewModel.Machine}FanSpeedPrecentage");
-                        this.ViewModel.FanSpeedPrecentage = (int)(Convert.ToDouble(method.Invoke(null, null)) * 100 / (double)byte.MaxValue);
+
+                        if(this.GetFanSpeedPrecentage == null) 
+                            this.GetFanSpeedPrecentage = typeof(Operation).GetMethod($"Get{this.ViewModel.Machine}FanSpeedPrecentage");
+
+                        this.ViewModel.FanSpeedPrecentage = (int)(Convert.ToDouble(this.GetFanSpeedPrecentage.Invoke(null, null)) * 100 / (double)byte.MaxValue);
                         this.ViewModel.FanSpeed = this.ViewModel.FanSpeedPrecentage * Convert.ToInt32(this.ViewModel.Machine) / 100;
 
                         if (!this.ViewModel.IsFanSpeedManualControlEnabled) this.ViewModel.ApplyFanSpeedPrecentage = this.ViewModel.FanSpeedPrecentage;
@@ -151,8 +157,10 @@ namespace PocketTDPControl
 
                         if (FanSpeedPrecentageQueue.TryDequeue(out var fanSpeedPrecentage) && this.ViewModel.IsFanSpeedManualControlEnabled)
                         {
-                            MethodInfo method = typeof(Operation).GetMethod($"Set{this.ViewModel.Machine}FanSpeedPrecentage");
-                            method.Invoke(null, new object[] { (byte)fanSpeedPrecentage });
+                            if(this.SetFanSpeedPrecentage == null) 
+                                this.SetFanSpeedPrecentage = typeof(Operation).GetMethod($"Set{this.ViewModel.Machine}FanSpeedPrecentage");
+
+                            this.SetFanSpeedPrecentage.Invoke(null, new object[] { (byte)fanSpeedPrecentage });
                         }
                     }
                 });
@@ -287,9 +295,7 @@ namespace PocketTDPControl
             File.WriteAllText(this.FilePath, JsonConvert.SerializeObject(this.ViewModel));
 
             this.TDPWindowDialog?.Close();
-
-            // TODO
-            this.Ayaneo2WindowDialog?.Close();
+            this.MachineWindow?.Close();
             this.SettingWindowDialog?.Close();
             this.Close();
         }
@@ -331,25 +337,37 @@ namespace PocketTDPControl
         private void MachineSettingButton_Click(object sender, RoutedEventArgs e)
         {
 
-            
             if (this.ViewModel.Machine != MachineType.None)
             {
-                // TODO
-                CenterizeWindowRelativeToMainWindow(Ayaneo2WindowDialog);
-                Ayaneo2WindowDialog.Visibility = Visibility.Visible;
-                Ayaneo2WindowDialog.Show();
-                Ayaneo2WindowDialog.Activate();
+
+                if (this.MachineWindow == null)
+                {
+                    Type machineWindowType =
+                        Type.GetType($"{MethodBase.GetCurrentMethod().DeclaringType.Namespace}.{this.ViewModel.Machine}Window");
+                    this.MachineWindow = (Window)Activator.CreateInstance(machineWindowType);
+                    this.MachineWindow.DataContext = this.ViewModel;
+                }
+
+                CenterizeWindowRelativeToMainWindow(this.MachineWindow);
+                this.MachineWindow.Visibility = Visibility.Visible;
+                this.MachineWindow.Show();
+                this.MachineWindow.Activate();
+
             }
         }
 
         private void FanSpeedControlCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            typeof(Operation).GetMethod($"Set{this.ViewModel.Machine}FanSpeedToManualControl").Invoke(null, null);
+            if (this.SetFanSpeedToManualControl == null)
+                this.SetFanSpeedToManualControl = typeof(Operation).GetMethod($"Set{this.ViewModel.Machine}FanSpeedToManualControl");
+            this.SetFanSpeedToManualControl.Invoke(null, null);
         }
 
         private void FanSpeedControlCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
-            typeof(Operation).GetMethod($"Set{this.ViewModel.Machine}FanSpeedToAutoControl").Invoke(null, null);
+            if (this.SetFanSpeedToAutoControl == null)
+                this.SetFanSpeedToAutoControl = typeof(Operation).GetMethod($"Set{this.ViewModel.Machine}FanSpeedToAutoControl");
+            this.SetFanSpeedToAutoControl.Invoke(null, null);
         }
     }
 }

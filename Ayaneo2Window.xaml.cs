@@ -10,9 +10,9 @@ namespace PocketTDPControl
     /// <summary>
     /// Ayaneo2Window.xaml 的交互逻辑
     /// </summary>
-    public partial class Ayaneo2Window : Window
+    public partial class AYANEO2Window : Window
     {
-        public Ayaneo2Window()
+        public AYANEO2Window()
         {
             InitializeComponent();
         }
