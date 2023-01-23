@@ -10,9 +10,9 @@
 
     <div id="container"></div>
 
-    <!--<script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>-->
-    <!--<script async src="./javascript/es-module-shims@1.6.3.js"></script>-->
-    <script async src="http://local/javascript/es-module-shims@1.6.3.js"></script>
+    <!--<script src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>-->
+    <!--<script src="./javascript/es-module-shims@1.6.3.js"></script>-->
+    <script src="http://local/javascript/es-module-shims@1.6.3.js"></script>    
 
     <script type="importmap">
         {
@@ -35,6 +35,7 @@
         import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
         import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
         import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
+        import { TWEEN } from 'three/addons/libs/tween.module.min.js';
 
         const container = document.getElementById('container');
 
@@ -54,7 +55,7 @@
         scene.environment = pmremGenerator.fromScene(new RoomEnvironment(), 1).texture;
 
         const camera = new THREE.PerspectiveCamera(10, window.innerWidth / window.innerHeight, 1, 100);
-        camera.position.set(6, 6, 6);
+        camera.position.set(0, 0, 7);
 
         const controls = new OrbitControls(camera, renderer.domElement);
         controls.target.set(0, 0, 0);
@@ -79,6 +80,7 @@
         loader.load(modelAddress, function (gltf) {
 
             const model = gltf.scene;
+            model.name = "AYANEO2";
             model.position.set(0, 0, 0);
             model.scale.set(0.01, 0.01, 0.01);
             scene.add(model);
@@ -90,7 +92,6 @@
             console.error(e);
 
         });
-
 
         window.onresize = function () {
 
@@ -105,13 +106,47 @@
 
             requestAnimationFrame(animate);
 
-            controls.update();
+            TWEEN.update();
 
+            controls.update();
             stats.update();
+
 
             renderer.render(scene, camera);
 
         }
+
+        window.chrome.webview.addEventListener('message', arg => {
+
+            const model = scene.getObjectByName('AYANEO2');
+
+            controls.autoRotate = false;
+
+            new TWEEN.Tween(camera.position).to({ x: 0, y: 0, z: 7 }, 1000).easing(TWEEN.Easing.Quartic.Out).start();
+            new TWEEN.Tween(controls.target).to({ x: 0, y: 0, z: 0 }, 1000).easing(TWEEN.Easing.Quartic.Out).start();
+
+            if (arg.data == "LC") {
+                new TWEEN.Tween(model.rotation).to({ x: Math.PI / 4, y: Math.PI / 4, z: 0 }, 1000).easing(TWEEN.Easing.Quartic.Out).start();
+            }
+
+            if (arg.data == "RC") {
+                new TWEEN.Tween(model.rotation).to({ x: Math.PI / 4, y: -Math.PI / 4, z: 0 }, 1000).easing(TWEEN.Easing.Quartic.Out).start();
+            }
+
+            if (arg.data == "LOGO" || arg.data == "BTD") {
+                new TWEEN.Tween(model.rotation).to({ x: -Math.PI / 4, y: -Math.PI / 4, z: 0 }, 1000).easing(TWEEN.Easing.Quartic.Out).start();
+            }
+
+            if (arg.data == "reset") {
+
+                new TWEEN.Tween(model.rotation).to({ x: 0, y: 0, z: 0 }, 1000).easing(TWEEN.Easing.Quartic.Out).start();
+                controls.autoRotate = true;
+                controls.rotateSpeed = 1;
+            }
+            
+            animate();
+
+        });
 
     </script>
 

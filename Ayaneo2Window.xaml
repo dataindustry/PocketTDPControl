@@ -8,6 +8,22 @@
         ShowInTaskbar="False" BorderThickness="1"
         Loaded="Window_Loaded" MouseDown="Window_MouseDown"
         Title="Ayaneo2Window" Height="500" Width="800">
+    
+    <Window.Resources>
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="{x:Type CheckBox}">
+            <Setter Property="Margin" Value="3"/>
+        </Style>
+        <Style TargetType="{x:Type GroupBox}">
+            <Setter Property="FontSize" Value="8"/>
+        </Style>
+    </Window.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20 "/>
@@ -26,35 +42,35 @@
         <GroupBox Header="Custom Key Mapping" Grid.Row="2" Grid.Column="0" Padding="0" Margin="5">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
 
-                <GroupBox FontSize="8" Header="Left Shoulder Button" Canvas.Left="620" Canvas.Top="380">
+                <GroupBox Header="Left Custom Button">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <CheckBox Margin="3" />
-                        <TextBox Width="40" Margin="2" IsEnabled="False" />
-                        <TextBox Width="40" Margin="2" IsEnabled="False" />
+                        <CheckBox Name="LC" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" />
+                        <TextBox IsEnabled="False" />
+                        <TextBox IsEnabled="False" />
                     </StackPanel>
                 </GroupBox>
 
-                <GroupBox FontSize="8" Header="Right Shoulder Button" Canvas.Left="620" Canvas.Top="380">
+                <GroupBox Header="Right Custom Button">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <CheckBox Margin="3" />
-                        <TextBox Width="40" Margin="2" IsEnabled="False" />
-                        <TextBox Width="40" Margin="2" IsEnabled="False" />
+                        <CheckBox x:Name="RC" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" />
+                        <TextBox IsEnabled="False" />
+                        <TextBox IsEnabled="False" />
                     </StackPanel>
                 </GroupBox>
 
-                <GroupBox FontSize="8" Header="AYANEO LOGO Button" Canvas.Left="620" Canvas.Top="380">
+                <GroupBox Header="AYANEO LOGO Button">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <CheckBox Margin="3" Checked="Ayaneo2LOGOCheckBox_Checked" Unchecked="Ayaneo2LOGOCheckBox_Unchecked" />
-                        <TextBox Width="40" Margin="2" FontSize="12" VerticalAlignment="Stretch" IsEnabled="False" Text="Win" />
-                        <TextBox Width="40" Margin="2" FontSize="12" VerticalAlignment="Stretch" IsEnabled="False" Text="G" />
+                        <CheckBox x:Name="LOGO" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" />
+                        <TextBox IsEnabled="False" Text="Win" />
+                        <TextBox IsEnabled="False" Text="G" />
                     </StackPanel>
                 </GroupBox>
 
-                <GroupBox FontSize="8" Header="Back To Desktop Button" Canvas.Left="620" Canvas.Top="380">
+                <GroupBox Header="Back To Desktop Button">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <CheckBox Margin="3" />
-                        <TextBox Width="40" Margin="2" IsEnabled="False" />
-                        <TextBox Width="40" Margin="2" IsEnabled="False" />
+                        <CheckBox x:Name="BTD" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" />
+                        <TextBox IsEnabled="False" />
+                        <TextBox IsEnabled="False" />
                     </StackPanel>
                 </GroupBox>
 

@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using Windows.UI.Xaml.Controls;
 using WindowsInput.Native;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 using CheckBox = System.Windows.Controls.CheckBox;
 
 namespace PocketTDPControl
@@ -25,16 +26,26 @@ namespace PocketTDPControl
             this.Visibility = Visibility.Hidden;
         }
 
-        private void Ayaneo2LOGOCheckBox_Checked(object sender, RoutedEventArgs e)
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            Operation.CustomKeyMapping(
-                new[] { Keys.LWin, Keys.RControlKey, Keys.F17 },
-                new[] { VirtualKeyCode.LWIN, VirtualKeyCode.VK_G });
+            var checkbox = e.Source as CheckBox;
+
+            webView.CoreWebView2.PostWebMessageAsString(checkbox.Name);
+
+            if(checkbox.Name == "LOGO")
+                Operation.CustomKeyMapping(
+                    new[] { Keys.LWin, Keys.RControlKey, Keys.F17 },
+                    new[] { VirtualKeyCode.LWIN, VirtualKeyCode.VK_G });
         }
 
-        private void Ayaneo2LOGOCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
-            Operation.CancelCustomKeyMapping();
+            var checkbox = e.Source as CheckBox;
+
+            webView.CoreWebView2.PostWebMessageAsString("reset");
+
+            if (checkbox.Name == "LOGO")
+                Operation.CancelCustomKeyMapping();
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
@@ -58,5 +69,5 @@ namespace PocketTDPControl
             if (e.ChangedButton == System.Windows.Input.MouseButton.Left)
                 this.DragMove();
         }
-    }
+    }   
 }

@@ -228,7 +228,6 @@
     <None Include="3dmodel\AYANEO2.gltf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="3dmodel\HDR.hdr" />
     <None Include="packages.config" />
     <None Include="PocketTDPControl_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
@@ -271,7 +270,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AYANEO2Window.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="javascript\es-module-shims%401.6.3.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
