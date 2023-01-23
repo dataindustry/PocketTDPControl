@@ -141,6 +141,8 @@ namespace PocketTDPControl
 
             this.FanSpeedPrecentageQueue = new ConcurrentQueue<int>();
 
+            this.ViewModel.IsFanSpeedManualControlEnabled = false;
+
             if (this.ViewModel.Machine != MachineType.None)
             {
 
@@ -368,6 +370,12 @@ namespace PocketTDPControl
             if (this.SetFanSpeedToAutoControl == null)
                 this.SetFanSpeedToAutoControl = typeof(Operation).GetMethod($"Set{this.ViewModel.Machine}FanSpeedToAutoControl");
             this.SetFanSpeedToAutoControl.Invoke(null, null);
+        }
+
+        private void CurveButton_Click(object sender, RoutedEventArgs e)
+        {
+            CurveWindow curveWindow = new CurveWindow();
+            curveWindow.Show();
         }
     }
 }

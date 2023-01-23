@@ -31,6 +31,8 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x64</PlatformTarget>
@@ -86,6 +88,15 @@
       <HintPath>packages\LibreHardwareMonitorLib.0.9.1\lib\net472\LibreHardwareMonitorLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.Web.WebView2.Core, Version=1.0.1518.46, Culture=neutral, PublicKeyToken=2a8ab48044d2601e, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Web.WebView2.1.0.1518.46\lib\net45\Microsoft.Web.WebView2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.WebView2.WinForms, Version=1.0.1518.46, Culture=neutral, PublicKeyToken=2a8ab48044d2601e, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Web.WebView2.1.0.1518.46\lib\net45\Microsoft.Web.WebView2.WinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.WebView2.Wpf, Version=1.0.1518.46, Culture=neutral, PublicKeyToken=2a8ab48044d2601e, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Web.WebView2.1.0.1518.46\lib\net45\Microsoft.Web.WebView2.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.13.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -138,6 +149,9 @@
     <Compile Include="AYANEO2Window.xaml.cs">
       <DependentUpon>AYANEO2Window.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CurveWindow.xaml.cs">
+      <DependentUpon>CurveWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="EstimatedRunTimeConverter.cs" />
     <Compile Include="HardwareMonitor.cs" />
     <Compile Include="MachineType.cs" />
@@ -156,6 +170,10 @@
     </Compile>
     <Compile Include="ViewModel.cs" />
     <Page Include="AYANEO2Window.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CurveWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -204,6 +222,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="3dmodel\AIR.gltf" />
+    <None Include="3dmodel\AYANEO2.gltf" />
+    <None Include="3dmodel\HDR.hdr" />
     <None Include="packages.config" />
     <None Include="PocketTDPControl_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
@@ -245,6 +266,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AYANEO2Window.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\es-module-shims%401.6.3.js" />
     <Content Include="ryzenadj\inpoutx64.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -264,5 +289,1583 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="javascript\three%400.148.0\build\three.cjs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\build\three.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\build\three.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\build\three.module.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\animation\AnimationClipCreator.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\animation\CCDIKSolver.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\animation\MMDAnimationHelper.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\animation\MMDPhysics.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\cameras\CinematicCamera.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\capabilities\WebGL.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\capabilities\WebGPU.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\controls\ArcballControls.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\controls\DragControls.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\controls\FirstPersonControls.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\controls\FlyControls.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\controls\OrbitControls.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\controls\PointerLockControls.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\controls\TrackballControls.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\controls\TransformControls.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\csm\CSM.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\csm\CSMFrustum.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\csm\CSMHelper.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\csm\CSMShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\curves\CurveExtras.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\curves\NURBSCurve.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\curves\NURBSSurface.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\curves\NURBSUtils.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\effects\AnaglyphEffect.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\effects\AsciiEffect.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\effects\OutlineEffect.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\effects\ParallaxBarrierEffect.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\effects\PeppersGhostEffect.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\effects\StereoEffect.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\environments\DebugEnvironment.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\environments\RoomEnvironment.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\exporters\ColladaExporter.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\exporters\DRACOExporter.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\exporters\EXRExporter.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\exporters\GLTFExporter.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\exporters\KTX2Exporter.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\exporters\MMDExporter.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\exporters\OBJExporter.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\exporters\PLYExporter.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\exporters\STLExporter.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\exporters\USDZExporter.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\geometries\BoxLineGeometry.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\geometries\ConvexGeometry.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\geometries\DecalGeometry.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\geometries\LightningStrike.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\geometries\ParametricGeometries.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\geometries\ParametricGeometry.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\geometries\RoundedBoxGeometry.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\geometries\TeapotGeometry.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\geometries\TextGeometry.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\helpers\LightProbeHelper.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\helpers\OctreeHelper.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\helpers\PositionalAudioHelper.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\helpers\RectAreaLightHelper.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\helpers\VertexNormalsHelper.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\helpers\VertexTangentsHelper.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\helpers\ViewHelper.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\interactive\HTMLMesh.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\interactive\InteractiveGroup.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\interactive\SelectionBox.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\interactive\SelectionHelper.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\libs\ammo.wasm.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\libs\ammo.wasm.wasm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\libs\basis\basis_transcoder.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\libs\basis\basis_transcoder.wasm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\libs\basis\README.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\libs\chevrotain.module.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\libs\draco\draco_decoder.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\libs\draco\draco_decoder.wasm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\libs\draco\draco_encoder.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\libs\draco\draco_wasm_wrapper.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\libs\draco\gltf\draco_decoder.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\libs\draco\gltf\draco_decoder.wasm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\libs\draco\gltf\draco_encoder.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\libs\draco\gltf\draco_wasm_wrapper.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\libs\draco\README.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\libs\ecsy.module.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\libs\fflate.module.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\libs\flow.module.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\libs\ktx-parse.module.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\libs\lil-gui.module.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\libs\lottie_canvas.module.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\libs\meshopt_decoder.module.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\libs\mikktspace.module.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\libs\mmdparser.module.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\libs\motion-controllers.module.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\libs\OimoPhysics\index.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\libs\OimoPhysics\OimoPhysics.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\libs\opentype.module.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\libs\potpack.module.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\libs\rhino3dm\rhino3dm.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\libs\rhino3dm\rhino3dm.module.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\libs\rhino3dm\rhino3dm.wasm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\libs\stats.module.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\libs\tween.module.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\libs\utif.module.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\libs\zstddec.module.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\lights\LightProbeGenerator.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\lights\RectAreaLightUniformsLib.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\lines\Line2.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\lines\LineGeometry.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\lines\LineMaterial.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\lines\LineSegments2.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\lines\LineSegmentsGeometry.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\lines\Wireframe.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\lines\WireframeGeometry2.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\3DMLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\3MFLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\AMFLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\BasisTextureLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\BVHLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\ColladaLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\DDSLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\DRACOLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\EXRLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\FBXLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\FontLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\GCodeLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\GLTFLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\HDRCubeTextureLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\IFCLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\ifc\web-ifc-api.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\ifc\web-ifc.wasm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\KMZLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\KTX2Loader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\KTXLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\LDrawLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\LogLuvLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\LottieLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\LUT3dlLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\LUTCubeLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\LWOLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\lwo\IFFParser.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\lwo\LWO2Parser.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\lwo\LWO3Parser.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\MaterialXLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\MD2Loader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\MDDLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\MMDLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\MTLLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\NRRDLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\OBJLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\PCDLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\PDBLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\PLYLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\PRWMLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\PVRLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\RGBELoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\RGBMLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\STLLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\SVGLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\TDSLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\TGALoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\TIFFLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\TiltLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\TTFLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\USDZLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\VOXLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\VRMLLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\VTKLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\loaders\XYZLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\materials\MeshGouraudMaterial.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\math\Capsule.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\math\ColorConverter.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\math\ConvexHull.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\math\ImprovedNoise.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\math\Lut.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\math\MeshSurfaceSampler.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\math\OBB.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\math\Octree.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\math\SimplexNoise.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\misc\ConvexObjectBreaker.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\misc\GPUComputationRenderer.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\misc\Gyroscope.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\misc\MD2Character.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\misc\MD2CharacterComplex.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\misc\MorphAnimMesh.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\misc\MorphBlendMesh.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\misc\ProgressiveLightMap.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\misc\RollerCoaster.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\misc\TubePainter.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\misc\Volume.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\misc\VolumeSlice.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\modifiers\CurveModifier.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\modifiers\EdgeSplitModifier.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\modifiers\SimplifyModifier.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\modifiers\TessellateModifier.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\accessors\MatcapUVEditor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\accessors\NormalEditor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\accessors\PositionEditor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\accessors\UVEditor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\core\BaseNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\core\DataFile.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\core\FileEditor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\core\FileURLEditor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\display\BlendEditor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\display\NormalMapEditor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\examples\animate-uv.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\examples\fake-top-light.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\examples\matcap.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\examples\oscillator-color.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\examples\rim.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\inputs\ColorEditor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\inputs\FloatEditor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\inputs\SliderEditor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\inputs\TextureEditor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\inputs\Vector2Editor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\inputs\Vector3Editor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\inputs\Vector4Editor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\materials\BasicMaterialEditor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\materials\PointsMaterialEditor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\materials\StandardMaterialEditor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\math\AngleEditor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\math\DotEditor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\math\InvertEditor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\math\LimiterEditor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\math\NormalizeEditor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\math\OperatorEditor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\math\PowerEditor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\math\TrigonometryEditor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\NodeEditor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\procedural\CheckerEditor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\scene\MeshEditor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\scene\Object3DEditor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\scene\PointsEditor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\utils\JoinEditor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\utils\OscillatorEditor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\utils\PreviewEditor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\utils\SplitEditor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\node-editor\utils\TimerEditor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\accessors\BitangentNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\accessors\BufferNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\accessors\CameraNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\accessors\CubeTextureNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\accessors\InstanceNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\accessors\MaterialNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\accessors\MaterialReferenceNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\accessors\ModelNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\accessors\ModelViewProjectionNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\accessors\NormalNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\accessors\Object3DNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\accessors\PointUVNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\accessors\PositionNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\accessors\ReferenceNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\accessors\ReflectVectorNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\accessors\SkinningNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\accessors\StorageBufferNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\accessors\TangentNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\accessors\TextureNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\accessors\UserDataNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\accessors\UVNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\core\ArrayUniformNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\core\AttributeNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\core\BypassNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\core\CacheNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\core\CodeNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\core\constants.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\core\ConstNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\core\ContextNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\core\ExpressionNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\core\FunctionCallNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\core\FunctionNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\core\InputNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\core\InstanceIndexNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\core\Node.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\core\NodeAttribute.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\core\NodeBuilder.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\core\NodeCache.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\core\NodeCode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\core\NodeFrame.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\core\NodeFunction.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\core\NodeFunctionInput.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\core\NodeKeywords.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\core\NodeParser.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\core\NodeUniform.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\core\NodeUtils.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\core\NodeVar.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\core\NodeVarying.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\core\PropertyNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\core\StackNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\core\TempNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\core\UniformNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\core\VarNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\core\VaryingNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\display\BlendModeNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\display\ColorAdjustmentNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\display\ColorSpaceNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\display\FrontFacingNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\display\NormalMapNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\display\PosterizeNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\display\ToneMappingNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\display\ViewportNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\fog\FogExp2Node.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\fog\FogNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\fog\FogRangeNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\functions\BSDF\BRDF_GGX.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\functions\BSDF\BRDF_Lambert.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\functions\BSDF\DFGApprox.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\functions\BSDF\D_GGX.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\functions\BSDF\F_Schlick.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\functions\BSDF\V_GGX_SmithCorrelated.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\functions\light\getDirectionVector.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\functions\light\getDistanceAttenuation.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\functions\material\getGeometryRoughness.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\functions\material\getRoughness.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\functions\PhysicalLightingModel.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\geometry\RangeNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\gpgpu\ComputeNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\lighting\AmbientLightNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\lighting\AnalyticLightNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\lighting\AONode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\lighting\DirectionalLightNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\lighting\EnvironmentNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\lighting\HemisphereLightNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\lighting\LightingContextNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\lighting\LightingNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\lighting\LightsNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\lighting\PointLightNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\lighting\SpotLightNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\loaders\NodeLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\loaders\NodeMaterialLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\loaders\NodeObjectLoader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\materials\LineBasicNodeMaterial.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\materials\Materials.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\materials\MeshBasicNodeMaterial.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\materials\MeshPhysicalNodeMaterial.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\materials\MeshStandardNodeMaterial.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\materials\NodeMaterial.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\materials\PointsNodeMaterial.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\materials\SpriteNodeMaterial.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\materialx\DISCLAIMER.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\materialx\lib\mx_hsv.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\materialx\lib\mx_noise.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\materialx\lib\mx_transform_color.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\materialx\MaterialXNodes.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\math\CondNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\math\MathNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\math\OperatorNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\Nodes.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\parsers\GLSLNodeFunction.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\parsers\GLSLNodeParser.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\parsers\WGSLNodeFunction.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\parsers\WGSLNodeParser.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\procedural\CheckerNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\shadernode\ShaderNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\shadernode\ShaderNodeBaseElements.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\shadernode\ShaderNodeElements.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\utils\ArrayElementNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\utils\ConvertNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\utils\EquirectUVNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\utils\JoinNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\utils\MatcapUVNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\utils\MaxMipLevelNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\utils\OscNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\utils\RemapNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\utils\RotateUVNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\utils\SpecularMIPLevelNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\utils\SplitNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\utils\SpriteSheetUVNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\utils\TimerNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\nodes\utils\TriplanarTexturesNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\objects\GroundProjectedEnv.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\objects\Lensflare.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\objects\LightningStorm.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\objects\MarchingCubes.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\objects\Reflector.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\objects\ReflectorForSSRPass.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\objects\Refractor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\objects\ShadowMesh.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\objects\Sky.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\objects\Water.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\objects\Water2.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\offscreen\jank.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\offscreen\offscreen.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\offscreen\scene.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\physics\AmmoPhysics.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\physics\OimoPhysics.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\postprocessing\AdaptiveToneMappingPass.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\postprocessing\AfterimagePass.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\postprocessing\BloomPass.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\postprocessing\BokehPass.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\postprocessing\ClearPass.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\postprocessing\CubeTexturePass.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\postprocessing\DotScreenPass.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\postprocessing\EffectComposer.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\postprocessing\FilmPass.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\postprocessing\GlitchPass.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\postprocessing\HalftonePass.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\postprocessing\LUTPass.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\postprocessing\MaskPass.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\postprocessing\OutlinePass.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\postprocessing\Pass.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\postprocessing\RenderPass.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\postprocessing\RenderPixelatedPass.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\postprocessing\SAOPass.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\postprocessing\SavePass.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\postprocessing\ShaderPass.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\postprocessing\SMAAPass.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\postprocessing\SSAARenderPass.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\postprocessing\SSAOPass.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\postprocessing\SSRPass.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\postprocessing\TAARenderPass.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\postprocessing\TexturePass.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\postprocessing\UnrealBloomPass.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\renderers\CSS2DRenderer.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\renderers\CSS3DRenderer.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\renderers\Projector.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\renderers\SVGRenderer.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\renderers\webgl\nodes\SlotNode.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\renderers\webgl\nodes\WebGLNodeBuilder.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\renderers\webgl\nodes\WebGLNodes.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\renderers\webgpu\constants.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\renderers\webgpu\nodes\WebGPUNodeBuilder.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\renderers\webgpu\nodes\WebGPUNodes.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\renderers\webgpu\nodes\WebGPUNodeSampledTexture.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\renderers\webgpu\nodes\WebGPUNodeSampler.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\renderers\webgpu\nodes\WebGPUNodeUniform.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\renderers\webgpu\WebGPUAnimation.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\renderers\webgpu\WebGPUAttributes.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\renderers\webgpu\WebGPUBackground.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\renderers\webgpu\WebGPUBinding.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\renderers\webgpu\WebGPUBindings.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\renderers\webgpu\WebGPUBuffer.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\renderers\webgpu\WebGPUBufferUtils.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\renderers\webgpu\WebGPUComputePipelines.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\renderers\webgpu\WebGPUGeometries.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\renderers\webgpu\WebGPUInfo.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\renderers\webgpu\WebGPUObjects.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\renderers\webgpu\WebGPUProgrammableStage.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\renderers\webgpu\WebGPUProperties.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\renderers\webgpu\WebGPURenderer.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\renderers\webgpu\WebGPURenderLists.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\renderers\webgpu\WebGPURenderPipeline.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\renderers\webgpu\WebGPURenderPipelines.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\renderers\webgpu\WebGPURenderStates.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\renderers\webgpu\WebGPUSampledTexture.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\renderers\webgpu\WebGPUSampler.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\renderers\webgpu\WebGPUStorageBuffer.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\renderers\webgpu\WebGPUTextureRenderer.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\renderers\webgpu\WebGPUTextures.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\renderers\webgpu\WebGPUTextureUtils.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\renderers\webgpu\WebGPUUniform.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\renderers\webgpu\WebGPUUniformBuffer.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\renderers\webgpu\WebGPUUniformsGroup.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\renderers\webgpu\WebGPUUtils.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\ACESFilmicToneMappingShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\AfterimageShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\BasicShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\BleachBypassShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\BlendShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\BokehShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\BokehShader2.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\BrightnessContrastShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\ColorCorrectionShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\ColorifyShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\ConvolutionShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\CopyShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\DepthLimitedBlurShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\DigitalGlitch.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\DOFMipMapShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\DotScreenShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\FilmShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\FocusShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\FreiChenShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\FXAAShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\GammaCorrectionShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\GodRaysShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\HalftoneShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\HorizontalBlurShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\HorizontalTiltShiftShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\HueSaturationShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\KaleidoShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\LuminosityHighPassShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\LuminosityShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\MirrorShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\MMDToonShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\NormalMapShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\RGBShiftShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\SAOShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\SepiaShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\SMAAShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\SobelOperatorShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\SSAOShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\SSRShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\SubsurfaceScatteringShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\TechnicolorShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\ToneMapShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\ToonShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\TriangleBlurShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\UnpackDepthRGBAShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\VelocityShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\VerticalBlurShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\VerticalTiltShiftShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\VignetteShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\VolumeShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\shaders\WaterRefractionShader.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\textures\FlakesTexture.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\utils\BufferGeometryUtils.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\utils\CameraUtils.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\utils\GeometryCompressionUtils.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\utils\GeometryUtils.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\utils\GPUStatsPanel.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\utils\LDrawUtils.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\utils\PackedPhongMaterial.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\utils\SceneUtils.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\utils\ShadowMapViewer.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\utils\SkeletonUtils.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\utils\UVsDebug.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\utils\WorkerPool.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\webxr\ARButton.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\webxr\OculusHandModel.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\webxr\OculusHandPointerModel.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\webxr\Text2D.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\webxr\VRButton.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\webxr\XRControllerModelFactory.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\webxr\XREstimatedLight.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\webxr\XRHandMeshModel.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\webxr\XRHandModelFactory.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="javascript\three%400.148.0\examples\jsm\webxr\XRHandPrimitiveModel.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="packages\Microsoft.Web.WebView2.1.0.1518.46\build\Microsoft.Web.WebView2.targets" Condition="Exists('packages\Microsoft.Web.WebView2.1.0.1518.46\build\Microsoft.Web.WebView2.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\Microsoft.Web.WebView2.1.0.1518.46\build\Microsoft.Web.WebView2.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.Web.WebView2.1.0.1518.46\build\Microsoft.Web.WebView2.targets'))" />
+  </Target>
 </Project>

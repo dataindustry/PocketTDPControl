@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
+using Windows.UI.Xaml.Controls;
 using WindowsInput.Native;
 using CheckBox = System.Windows.Controls.CheckBox;
 
