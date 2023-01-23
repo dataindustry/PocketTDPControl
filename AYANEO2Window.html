@@ -11,100 +11,107 @@
     <div id="container"></div>
 
     <!--<script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>-->
-    <script async src="./javascript/es-module-shims@1.6.3.js"></script>
+    <!--<script async src="./javascript/es-module-shims@1.6.3.js"></script>-->
+    <script async src="http://local/javascript/es-module-shims@1.6.3.js"></script>
 
     <script type="importmap">
         {
             "imports": {
                 // "three": "https://unpkg.com/three@0.148.0/build/three.module.js",
                 // "three/addons/": "https://unpkg.com/three@0.148.0/examples/jsm/"
-                "three": "./javascript/three@0.148.0/build/three.module.js",
-                "three/addons/": "./javascript/three@0.148.0/examples/jsm/"
+                // "three": "./javascript/three@0.148.0/build/three.module.js",
+                // "three/addons/": "./javascript/three@0.148.0/examples/jsm/",
+                "three": "http://local/javascript/three@0.148.0/build/three.module.js",
+                "three/addons/": "http://local/javascript/three@0.148.0/examples/jsm/"
             }
         }
     </script>
 
     <script type="module">
 
-    import * as THREE from 'three';
-    import Stats from 'three/addons/libs/stats.module.js';
-    import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
-    import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
-    import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
-    import {DRACOLoader} from 'three/addons/loaders/DRACOLoader.js';
+        import * as THREE from 'three';
+        import Stats from 'three/addons/libs/stats.module.js';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+        import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
 
-    const container = document.getElementById('container');
+        const container = document.getElementById('container');
 
-    const stats = new Stats();
-    container.appendChild(stats.dom);
+        const stats = new Stats();
+        container.appendChild(stats.dom);
 
-    const renderer = new THREE.WebGLRenderer({antialias: true});
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.outputEncoding = THREE.sRGBEncoding;
-    container.appendChild(renderer.domElement);
-
-    const pmremGenerator = new THREE.PMREMGenerator(renderer);
-
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xffffff);
-    scene.environment = pmremGenerator.fromScene(new RoomEnvironment(), 1).texture;
-
-    const camera = new THREE.PerspectiveCamera(10, window.innerWidth / window.innerHeight, 1, 100);
-    camera.position.set(6, 6, 6);
-
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.target.set(0, 0, 0);
-    controls.update();
-    controls.enablePan = true;
-    controls.enableDamping = true;
-    controls.enableZoom = true;
-    controls.autoRotate = true;
-    controls.rotateSpeed = 1;
-
-    const dracoLoader = new DRACOLoader();
-
-    // dracoLoader.setDecoderPath('https://unpkg.com/three@0.148.0/examples/jsm/libs/draco/');
-    dracoLoader.setDecoderPath('./javascript/three@0.148.0/examples/jsm/libs/draco/');
-
-    const loader = new GLTFLoader();
-    loader.setDRACOLoader(dracoLoader);
-    loader.load('3dmodel/AYANEO2.gltf', function (gltf) {
-
-        const model = gltf.scene;
-        model.position.set(0, 0, 0);
-        model.scale.set(0.01, 0.01, 0.01);
-        scene.add(model);
-
-        animate();
-
-    }, undefined, function (e) {
-
-        console.error(e);
-
-    });
-
-
-    window.onresize = function () {
-
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.outputEncoding = THREE.sRGBEncoding;
+        container.appendChild(renderer.domElement);
 
-    };
+        const pmremGenerator = new THREE.PMREMGenerator(renderer);
 
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0xffffff);
+        scene.environment = pmremGenerator.fromScene(new RoomEnvironment(), 1).texture;
 
-    function animate() {
+        const camera = new THREE.PerspectiveCamera(10, window.innerWidth / window.innerHeight, 1, 100);
+        camera.position.set(6, 6, 6);
 
-        requestAnimationFrame(animate);
-
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.target.set(0, 0, 0);
         controls.update();
+        controls.enablePan = true;
+        controls.enableDamping = true;
+        controls.enableZoom = true;
+        controls.autoRotate = true;
+        controls.rotateSpeed = 1;
 
-        stats.update();
+        const dracoLoader = new DRACOLoader();
 
-        renderer.render(scene, camera);
+        // dracoLoader.setDecoderPath('https://unpkg.com/three@0.148.0/examples/jsm/libs/draco/');
+        // dracoLoader.setDecoderPath('./javascript/three@0.148.0/examples/jsm/libs/draco/');
+        dracoLoader.setDecoderPath('http://local/javascript/three@0.148.0/examples/jsm/libs/draco/');
 
-    }
+        const modelAddress = 'http://local/3dmodel/AYANEO2.gltf';
+        // const modelAddress = '3dmodel/AYANEO2.gltf';
+
+        const loader = new GLTFLoader();
+        loader.setDRACOLoader(dracoLoader);
+        loader.load(modelAddress, function (gltf) {
+
+            const model = gltf.scene;
+            model.position.set(0, 0, 0);
+            model.scale.set(0.01, 0.01, 0.01);
+            scene.add(model);
+
+            animate();
+
+        }, undefined, function (e) {
+
+            console.error(e);
+
+        });
+
+
+        window.onresize = function () {
+
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+        };
+
+
+        function animate() {
+
+            requestAnimationFrame(animate);
+
+            controls.update();
+
+            stats.update();
+
+            renderer.render(scene, camera);
+
+        }
 
     </script>
 

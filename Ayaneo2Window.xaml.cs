@@ -1,4 +1,6 @@
-﻿using PocketTDPControl;
+﻿using Microsoft.Web.WebView2.Core;
+using PocketTDPControl;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
@@ -33,6 +35,28 @@ namespace PocketTDPControl
         private void Ayaneo2LOGOCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
             Operation.CancelCustomKeyMapping();
+        }
+
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            var environment = await CoreWebView2Environment.CreateAsync(userDataFolder: Environment.CurrentDirectory);
+            webView.CoreWebView2InitializationCompleted += WebView_CoreWebView2InitializationCompletedAsync;
+            await webView.EnsureCoreWebView2Async(environment);
+        }
+
+        private void WebView_CoreWebView2InitializationCompletedAsync(object sender, CoreWebView2InitializationCompletedEventArgs e)
+        {
+
+            webView.CoreWebView2.SetVirtualHostNameToFolderMapping("local", Environment.CurrentDirectory,
+                CoreWebView2HostResourceAccessKind.Allow);
+            webView.Source = new Uri(Environment.CurrentDirectory + @"/AYANEO2Window.html");
+
+        }
+
+        private void Window_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == System.Windows.Input.MouseButton.Left)
+                this.DragMove();
         }
     }
 }

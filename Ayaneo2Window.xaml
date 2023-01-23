@@ -3,38 +3,65 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PocketTDPControl"
+        xmlns:local="clr-namespace:PocketTDPControl" xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
         mc:Ignorable="d" AllowsTransparency="False" WindowStyle="None" ResizeMode="NoResize"
-        ShowInTaskbar="False"
-        Title="Ayaneo2Window" Height="450" Width="800">
+        ShowInTaskbar="False" BorderThickness="1"
+        Loaded="Window_Loaded" MouseDown="Window_MouseDown"
+        Title="Ayaneo2Window" Height="500" Width="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="20" />
+            <RowDefinition Height="20 "/>
             <RowDefinition />
+            <RowDefinition Height="70" />
+            <RowDefinition Height="20" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <Button Grid.Row="0" Grid.Column="0" Content="CLOSE" Click="Button_Click" />
+        <Button Grid.Row="0" Grid.Column="0" Content="AYANEO 2 SETTING WINDOW" IsEnabled="False" />
 
-        <Canvas Grid.Row="1" Grid.Column="0">
+        <wv2:WebView2 Grid.Row="1" Grid.Column="0" Name="webView" />
 
-            <Canvas.Background>
-                <ImageBrush ImageSource="./ayaneo2_white.png" Stretch="UniformToFill"/>
-            </Canvas.Background>
+        <GroupBox Header="Custom Key Mapping" Grid.Row="2" Grid.Column="0" Padding="0" Margin="5">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
 
-            <Line X1="650" X2="700" Y1="315" Y2="380" StrokeThickness="8" Fill="Black" Stroke="Aqua" Opacity="0.7" />
+                <GroupBox FontSize="8" Header="Left Shoulder Button" Canvas.Left="620" Canvas.Top="380">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <CheckBox Margin="3" />
+                        <TextBox Width="40" Margin="2" IsEnabled="False" />
+                        <TextBox Width="40" Margin="2" IsEnabled="False" />
+                    </StackPanel>
+                </GroupBox>
 
-            <GroupBox Header="Ayaneo2 LOGO Button" Canvas.Left="620" Canvas.Top="380">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <CheckBox Margin="3" Checked="Ayaneo2LOGOCheckBox_Checked" Unchecked="Ayaneo2LOGOCheckBox_Unchecked" />
-                    <TextBox Width="40" Margin="2" Text="Win" IsEnabled="False" />
-                    <TextBlock Text="+" Margin="2" />
-                    <TextBox Width="40" Margin="2" Text="G" IsEnabled="False" />
-                </StackPanel>
-            </GroupBox>
+                <GroupBox FontSize="8" Header="Right Shoulder Button" Canvas.Left="620" Canvas.Top="380">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <CheckBox Margin="3" />
+                        <TextBox Width="40" Margin="2" IsEnabled="False" />
+                        <TextBox Width="40" Margin="2" IsEnabled="False" />
+                    </StackPanel>
+                </GroupBox>
 
-        </Canvas>
+                <GroupBox FontSize="8" Header="AYANEO LOGO Button" Canvas.Left="620" Canvas.Top="380">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <CheckBox Margin="3" Checked="Ayaneo2LOGOCheckBox_Checked" Unchecked="Ayaneo2LOGOCheckBox_Unchecked" />
+                        <TextBox Width="40" Margin="2" FontSize="12" VerticalAlignment="Stretch" IsEnabled="False" Text="Win" />
+                        <TextBox Width="40" Margin="2" FontSize="12" VerticalAlignment="Stretch" IsEnabled="False" Text="G" />
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox FontSize="8" Header="Back To Desktop Button" Canvas.Left="620" Canvas.Top="380">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <CheckBox Margin="3" />
+                        <TextBox Width="40" Margin="2" IsEnabled="False" />
+                        <TextBox Width="40" Margin="2" IsEnabled="False" />
+                    </StackPanel>
+                </GroupBox>
+
+            </StackPanel>
+        </GroupBox>
+
+        <Button Grid.Row="3" Grid.Column="0" Content="Close" Click="Button_Click" />
+        
     </Grid>
 </Window>

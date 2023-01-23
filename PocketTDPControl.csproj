@@ -222,8 +222,12 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="3dmodel\AIR.gltf" />
-    <None Include="3dmodel\AYANEO2.gltf" />
+    <None Include="3dmodel\AIR.gltf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="3dmodel\AYANEO2.gltf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="3dmodel\HDR.hdr" />
     <None Include="packages.config" />
     <None Include="PocketTDPControl_TemporaryKey.pfx" />
@@ -269,7 +273,9 @@
     <Content Include="AYANEO2Window.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="javascript\es-module-shims%401.6.3.js" />
+    <Content Include="javascript\es-module-shims%401.6.3.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="ryzenadj\inpoutx64.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

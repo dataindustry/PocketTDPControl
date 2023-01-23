@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Web.WebView2.Core;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,6 +13,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Windows.Networking;
+using Windows.UI.Xaml.Controls;
 
 namespace PocketTDPControl
 {
@@ -23,20 +26,6 @@ namespace PocketTDPControl
         public CurveWindow()
         {
             InitializeComponent();
-        }
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            webView.CoreWebView2InitializationCompleted += WebView_CoreWebView2InitializationCompletedAsync;
-            webView.EnsureCoreWebView2Async();
-
-        }
-
-        private async void WebView_CoreWebView2InitializationCompletedAsync(object sender, Microsoft.Web.WebView2.Core.CoreWebView2InitializationCompletedEventArgs e)
-        {
-
-            string text = System.IO.File.ReadAllText(@"./AYANEO2Window.html");
-            await webView.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync(text);
-
         }
     }
 }
