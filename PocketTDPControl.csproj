@@ -285,9 +285,6 @@
     <Content Include="WinRing0x64.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Resource Include="ayaneo2_white.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
     <Content Include="ryzenadj\libryzenadj.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
