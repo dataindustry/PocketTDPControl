@@ -163,7 +163,6 @@
     <Compile Include="KeyboardHook.cs" />
     <Compile Include="MainService.cs" />
     <Compile Include="PresetTDPConverter.cs" />
-    <Compile Include="RadioBoolToIntConverter.cs" />
     <Compile Include="SettingWindow.xaml.cs">
       <DependentUpon>SettingWindow.xaml</DependentUpon>
     </Compile>
