@@ -259,7 +259,7 @@
             <GroupBox.Header>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Target FPS Mode" FontSize="10" Margin="0,1,5,0" />
-                    <CheckBox />
+                    <CheckBox IsChecked="{Binding IsTargetFPSModelEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </StackPanel>
             </GroupBox.Header>
             <Grid>
@@ -272,10 +272,14 @@
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
-                <RadioButton Grid.Row="0" Grid.Column="0" Content="30" />
-                <RadioButton Grid.Row="0" Grid.Column="1" Content="45" />
-                <RadioButton Grid.Row="1" Grid.Column="0" Content="60" />
-                <RadioButton Grid.Row="1" Grid.Column="1" Content="∞" />
+                <RadioButton Grid.Row="0" Grid.Column="0" Content="30" 
+                             IsEnabled="{Binding IsTargetFPSModelEnabled}" Checked="TargetFPSModelRadioButton_Checked" />
+                <RadioButton Grid.Row="0" Grid.Column="1" Content="45" 
+                             IsEnabled="{Binding IsTargetFPSModelEnabled}" Checked="TargetFPSModelRadioButton_Checked" />
+                <RadioButton Grid.Row="1" Grid.Column="0" Content="60" 
+                             IsEnabled="{Binding IsTargetFPSModelEnabled}" Checked="TargetFPSModelRadioButton_Checked" />
+                <RadioButton Grid.Row="1" Grid.Column="1" Content="∞" 
+                             IsEnabled="{Binding IsTargetFPSModelEnabled}" Checked="TargetFPSModelRadioButton_Checked" />
             </Grid>
 
         </GroupBox>

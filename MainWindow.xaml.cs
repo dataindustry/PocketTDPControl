@@ -3,11 +3,13 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Management;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.ServiceModel;
 using System.Threading;
 using System.Threading.Tasks;
@@ -376,6 +378,47 @@ namespace PocketTDPControl
         {
             CurveWindow curveWindow = new CurveWindow();
             curveWindow.Show();
+        }
+
+        private static readonly string RTSSGlobalProfile = "C:\\Program Files (x86)\\RivaTuner Statistics Server\\Profiles\\Global";
+        private static readonly string RTSSPath = "C:\\Program Files (x86)\\RivaTuner Statistics Server\\RTSS.exe";
+
+        [DllImport("RTSSHooks64.dll")]
+        private static extern void UpdateProfiles();
+
+        public static bool IsRTSSExisted() => File.Exists(RTSSPath);
+
+        public static int GetTargetFPS()
+        {
+            return int.Parse(INIHelper.ReadString("Framerate", "Limit", null, RTSSGlobalProfile));
+        }
+
+        public static void SetTargetFPS(int limit)
+        {
+            if (Process.GetProcessesByName("RTSS").Length == 0)
+            {
+                Console.WriteLine("RTSS process is not existed.");
+                return;
+            }
+
+            INIHelper.WriteString("Framerate", "Limit", limit.ToString(), RTSSGlobalProfile);
+            UpdateProfiles();
+        }
+
+        private void TargetFPSModelRadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            var radioButton = e.Source as System.Windows.Controls.RadioButton;
+            int targetFPS = 0;
+
+            if (radioButton.Content.ToString() != "∞")
+                int.TryParse(radioButton.Content.ToString(), out targetFPS);
+
+            this.ViewModel.ApplyTargetFPS = targetFPS;
+
+            var from = GetTargetFPS();
+            SetTargetFPS(this.ViewModel.ApplyTargetFPS);
+            Console.WriteLine($"{from} => {GetTargetFPS()}");
+
         }
     }
 }

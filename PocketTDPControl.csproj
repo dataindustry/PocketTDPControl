@@ -154,6 +154,7 @@
     </Compile>
     <Compile Include="EstimatedRunTimeConverter.cs" />
     <Compile Include="HardwareMonitor.cs" />
+    <Compile Include="INIHelper.cs" />
     <Compile Include="MachineType.cs" />
     <Compile Include="MachineWindow.xaml.cs">
       <DependentUpon>MachineWindow.xaml</DependentUpon>
@@ -162,6 +163,7 @@
     <Compile Include="KeyboardHook.cs" />
     <Compile Include="MainService.cs" />
     <Compile Include="PresetTDPConverter.cs" />
+    <Compile Include="RadioBoolToIntConverter.cs" />
     <Compile Include="SettingWindow.xaml.cs">
       <DependentUpon>SettingWindow.xaml</DependentUpon>
     </Compile>
@@ -273,6 +275,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="javascript\es-module-shims%401.6.3.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="RTSSHooks64.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="ryzenadj\inpoutx64.dll">

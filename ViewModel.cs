@@ -36,6 +36,9 @@ namespace PocketTDPControl
         private int applyFanSpeedPrecentage;
         private bool isFanSpeedManualControlEnabled;
 
+        private bool isTargetFPSModeEnabled;
+        private int applyTargetFPS;
+
         private int applyTDP;
 
         private ObservableCollection<int> presetTDP;
@@ -56,6 +59,9 @@ namespace PocketTDPControl
         public int MemoryUsed { get => memoryUsed; set { memoryUsed = value; RaisePropertyChanged(); } }
         public int EstimatedChargeRemaining { get => estimatedChargeRemaining; set { estimatedChargeRemaining = value; RaisePropertyChanged(); } }
         public int EstimatedRunTime { get => estimatedRunTime; set { estimatedRunTime = value; RaisePropertyChanged(); } }
+        public bool IsTargetFPSModelEnabled { get => isTargetFPSModeEnabled; set { isTargetFPSModeEnabled = value; RaisePropertyChanged(); } }
+        public int ApplyTargetFPS { get => applyTargetFPS; set { applyTargetFPS = value; RaisePropertyChanged(); } }
+
         public bool IsEditModeEnabled
         {
             get => isEditModeEnabled; set
