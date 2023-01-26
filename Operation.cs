@@ -2,8 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using WindowsInput;
 using WindowsInput.Native;
@@ -46,7 +47,6 @@ namespace PocketTDPControl
             p.Dispose();
 
         }
-
         public static void Adjust(string[] type, int[] tdp)
         {
 
@@ -69,7 +69,6 @@ namespace PocketTDPControl
             p.Dispose();
 
         }
-
         public static bool LoopbackExempt()
         {
             RegistryKey rkConfig = Registry.CurrentUser.OpenSubKey("Software\\Classes\\Local Settings\\Software\\Microsoft\\Windows\\CurrentVersion\\AppContainer\\Mappings\\");
@@ -111,8 +110,7 @@ namespace PocketTDPControl
             return false;
         }
 
-        /// <summary>
-        /// START keyboard mapping
+        #region keyboard mapping
         /// </summary>
         private static Dictionary<int, bool> FromComboKey = new Dictionary<int, bool>();
         private static VirtualKeyCode ToModifierKey, ToKey = 0;
@@ -180,11 +178,9 @@ namespace PocketTDPControl
             KBH?.UninstallHook();
 
         }
-        // END keyboard mapping
+        #endregion
 
-        /// <summary>
-        /// START Ayaneo 2 fan control via ec direct r/w
-        /// </summary>
+        #region Ayaneo 2 fan control via ec direct r/w
         private static Ols ols = null;
         private static ushort reg_addr = 78;
         private static ushort reg_data = 79;
@@ -311,6 +307,38 @@ namespace PocketTDPControl
                 return;
             OlsInitFailedEvent((object)null, (EventArgs)new OlsInitFailedEventArgs());
         }
-        // END Ayaneo 2 fan control via ec direct r/w
+        #endregion
+
+        #region Use RTSS to limit FPS
+        private static readonly string RTSSGlobalProfilePath = "C:\\Program Files (x86)\\RivaTuner Statistics Server\\Profiles\\Global";
+        private static readonly string RTSSApplicationPath = "C:\\Program Files (x86)\\RivaTuner Statistics Server\\RTSS.exe";
+
+        [DllImport("RTSSHooks64.dll")]
+        private static extern void UpdateProfiles();
+
+        public static bool IsRTSSExisted() => File.Exists(RTSSApplicationPath);
+
+        public static bool IsRTSSRunning() => Process.GetProcessesByName("RTSS").Length != 0;
+
+        public static int GetTargetFPS()
+        {
+            if (IsRTSSExisted() && IsRTSSRunning())
+                return int.Parse(INIHelper.ReadString("Framerate", "Limit", null, RTSSGlobalProfilePath));
+            else
+                throw new Exception();
+        }
+
+        public static void SetTargetFPS(int limit)
+        {
+            if (IsRTSSExisted() && IsRTSSRunning())
+            {
+                INIHelper.WriteString("Framerate", "Limit", limit.ToString(), RTSSGlobalProfilePath);
+                UpdateProfiles();
+            }
+            else
+                throw new Exception();
+
+        }
+        #endregion
     }
 }

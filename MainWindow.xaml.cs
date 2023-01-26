@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Toolkit.Wpf.UI.XamlHost;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
@@ -73,6 +74,8 @@ namespace PocketTDPControl
 
         }
 
+
+
         private void InitialDialog()
         {
             this.TDPWindowDialog = new TDPWindow();
@@ -93,7 +96,8 @@ namespace PocketTDPControl
 
                     HWM.Update();
 
-                    this.ViewModel.Machine = Operation.DetermineMachineType(this.ViewModel.MachineName);
+                    if(this.ViewModel.Machine == MachineType.None)
+                        this.ViewModel.Machine = Operation.DetermineMachineType(this.ViewModel.MachineName);
 
                     if (this.ViewModel.Machine != MachineType.None) {
 
@@ -132,44 +136,43 @@ namespace PocketTDPControl
                         this.ViewModel.EstimatedRunTime = int.Parse(mom.Current.Properties["EstimatedRunTime"].Value.ToString());
                     }
 
-                    Thread.Sleep(10000);
+                    Thread.Sleep(5000);
 
                 }
             });
             t.Start();
             
         }
-        private void InitialFanController() {
+        private void InitialFanController()
+        {
 
             this.FanSpeedPrecentageQueue = new ConcurrentQueue<int>();
 
             this.ViewModel.IsFanSpeedManualControlEnabled = false;
 
-            if (this.ViewModel.Machine != MachineType.None)
+
+            Task t = new Task(() =>
             {
-
-                Task t = new Task(() =>
+                while (true)
                 {
-                    while (true)
+
+                    if (this.ViewModel.Machine == MachineType.None || FanSpeedPrecentageQueue.IsEmpty)
                     {
-
-                        if (FanSpeedPrecentageQueue.IsEmpty)
-                        {
-                            Thread.Sleep(500);
-                            continue;
-                        }
-
-                        if (FanSpeedPrecentageQueue.TryDequeue(out var fanSpeedPrecentage) && this.ViewModel.IsFanSpeedManualControlEnabled)
-                        {
-                            if(this.SetFanSpeedPrecentage == null) 
-                                this.SetFanSpeedPrecentage = typeof(Operation).GetMethod($"Set{this.ViewModel.Machine}FanSpeedPrecentage");
-
-                            this.SetFanSpeedPrecentage.Invoke(null, new object[] { (byte)fanSpeedPrecentage });
-                        }
+                        Thread.Sleep(500);
+                        continue;
                     }
-                });
-                t.Start();
-            }
+                    Thread.Sleep(100);
+
+                    if (FanSpeedPrecentageQueue.TryDequeue(out var fanSpeedPrecentage) && this.ViewModel.IsFanSpeedManualControlEnabled)
+                    {
+                        if (this.SetFanSpeedPrecentage == null)
+                            this.SetFanSpeedPrecentage = typeof(Operation).GetMethod($"Set{this.ViewModel.Machine}FanSpeedPrecentage");
+
+                        this.SetFanSpeedPrecentage.Invoke(null, new object[] { (byte)fanSpeedPrecentage });
+                    }
+                }
+            });
+            t.Start();
 
         }
         private void InitialViewModel()
@@ -359,7 +362,6 @@ namespace PocketTDPControl
 
             }
         }
-
         private void FanSpeedControlCheckBox_Checked(object sender, RoutedEventArgs e)
         {
             if (this.SetFanSpeedToManualControl == null)
@@ -380,31 +382,6 @@ namespace PocketTDPControl
             curveWindow.Show();
         }
 
-        private static readonly string RTSSGlobalProfile = "C:\\Program Files (x86)\\RivaTuner Statistics Server\\Profiles\\Global";
-        private static readonly string RTSSPath = "C:\\Program Files (x86)\\RivaTuner Statistics Server\\RTSS.exe";
-
-        [DllImport("RTSSHooks64.dll")]
-        private static extern void UpdateProfiles();
-
-        public static bool IsRTSSExisted() => File.Exists(RTSSPath);
-
-        public static int GetTargetFPS()
-        {
-            return int.Parse(INIHelper.ReadString("Framerate", "Limit", null, RTSSGlobalProfile));
-        }
-
-        public static void SetTargetFPS(int limit)
-        {
-            if (Process.GetProcessesByName("RTSS").Length == 0)
-            {
-                Console.WriteLine("RTSS process is not existed.");
-                return;
-            }
-
-            INIHelper.WriteString("Framerate", "Limit", limit.ToString(), RTSSGlobalProfile);
-            UpdateProfiles();
-        }
-
         private void TargetFPSModelRadioButton_Checked(object sender, RoutedEventArgs e)
         {
             var radioButton = e.Source as System.Windows.Controls.RadioButton;
@@ -415,10 +392,37 @@ namespace PocketTDPControl
 
             this.ViewModel.ApplyTargetFPS = targetFPS;
 
-            var from = GetTargetFPS();
-            SetTargetFPS(this.ViewModel.ApplyTargetFPS);
-            Console.WriteLine($"{from} => {GetTargetFPS()}");
+            var from = Operation.GetTargetFPS();
+            Operation.SetTargetFPS(this.ViewModel.ApplyTargetFPS);
+            Console.WriteLine($"{from} => {Operation.GetTargetFPS()}");
 
+        }
+
+        private void TargetFPSModeCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            if (!Operation.IsRTSSExisted() || !Operation.IsRTSSRunning())
+            {
+                if (System.Windows.MessageBox.Show(
+                    "RTSS is not installed on this machine or not running properly.", "warning", MessageBoxButton.OK) == MessageBoxResult.OK)
+                {
+                    this.ViewModel.IsTargetFPSModelEnabled = false;
+                }
+            }
+
+        }
+
+        //private void WindowsXamlHost_ChildChanged(object sender, EventArgs e)
+        //{
+        //    var host = (WindowsXamlHost)sender;
+        //    var slider = (Windows.UI.Xaml.Controls.Slider)host.Child;
+        //    slider.Orientation = Windows.UI.Xaml.Controls.Orientation.Horizontal;
+        //}
+        private void TargetFPSModeCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            this.ViewModel.ApplyTargetFPS = 0;
+
+            if (Operation.IsRTSSExisted() && Operation.IsRTSSRunning())
+                Operation.SetTargetFPS(this.ViewModel.ApplyTargetFPS);
         }
     }
 }
